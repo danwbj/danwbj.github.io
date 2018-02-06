@@ -115,8 +115,8 @@ menu_icons:
 
 # Schemes
 # scheme: Muse
-scheme: Mist
-# scheme: Pisces
+# scheme: Mist
+scheme: Pisces
 # scheme: Gemini
 
 
@@ -376,7 +376,9 @@ han: false
 
 # Duoshuo ShortName
 #duoshuo_shortname:
-
+duoshuo:
+  enable: true
+  shortname: 椰子菇凉
 # Disqus
 disqus:
   enable: false
@@ -449,7 +451,7 @@ gitment:
 #add_this_id:
 
 # Share
-#duoshuo_share: true
+# duoshuo_share: true
 
 # NeedMoreShare2
 # This plugin is a pure javascript sharing lib which is useful in China.
@@ -715,7 +717,7 @@ pace: false
 pace_theme: pace-theme-minimal
 
 # Canvas-nest
-canvas_nest: false
+canvas_nest: true
 
 # three_waves
 three_waves: false

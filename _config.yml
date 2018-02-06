@@ -5,7 +5,7 @@
 # Site
 title: 椰子菇凉
 subtitle:
-description:
+description: 想到达明天现在就要启程！
 author: 椰子菇凉
 # language: en #zh-CN / zh-TW / ja / en
 language: zh-Hans
@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite2.com
+url: http://www.wudd.top
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
