@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[输出1-100之间的素数]]></title>
+    <url>%2F2018%2F02%2F28%2F%E8%BE%93%E5%87%BA1-100%E4%B9%8B%E9%97%B4%E7%9A%84%E7%B4%A0%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[素数：除了1和它本身外没有其他因数，即，除了1和它本身外不能被其他数整除1—不是素数2—最小的素数3—2（判断是否能被2整除）4—2，3（判断是否能被2,3整除）5—2，3，4（判断是否能被2,3,4整除）6—2，3，4，5（判断是否能被2,3,4,5整除）… 以下是js代码的实现：123456789101112for(let i=2;i&lt;=100;i++)&#123; let flag = true; for(let j=2;j&lt;i;j++)&#123; if(i%j==0)&#123; flag = false; break; &#125; &#125; if(flag)&#123; console.log(i) &#125; &#125;]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[linux系统分类]]></title>
+    <url>%2F2018%2F02%2F27%2Flinux%E7%B3%BB%E7%BB%9F%E5%88%86%E7%B1%BB%2F</url>
+    <content type="text"><![CDATA[一般来说著名的linux系统基本上分两大类： RedHat系列：Redhat、Centos、Fedora等 Debian系列：Debian、Ubuntu等 RedHat系列常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数” 包管理工具 yum 123456789yum的配置文件：/etc/yum.conf yum install gcc [centos] 更新：yum update 安装：yum install xxx 移除：yum remove xxx 清除已经安装过的档案（/var/cache/yum/）：yum clean all 搜寻：yum search xxx 列出所有档案：yum list 查询档案讯息：yum info xxx 支持tar包 Debian系列常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数” 包管理工具 apt-get 1234更新软件包：apt-get update安装：apt-get install xxx移除：apt-get remove xxx更新安装过的包：apt-get upgrade xxx 支持tar包]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[es6基础]]></title>
+    <url>%2F2018%2F02%2F26%2Fes6%E5%9F%BA%E7%A1%80%2F</url>
+    <content type="text"><![CDATA[let命令let有块级作用域，let声明的变量只在它所在的代码块有效 var有变量提升现象，let没有变量提升 let暂时性死区123456var tmp = 123;if (true) &#123; tmp = 'abc'; // ReferenceError let tmp;&#125; ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错let不允许重复声明一道面试题：1234567var funcs = []for (var i = 0; i &lt; 10; i++) &#123; funcs.push(function() &#123; console.log(i) &#125;)&#125;funcs.forEach(function(func) &#123; func()&#125;) 以上代码会输出10次数组10，如果想要输出0-9，两种解决方案：123456789101112131415// ES5告诉我们可以利用闭包解决这个问题var funcs = []for (var i = 0; i &lt; 10; i++) &#123; func.push((function(value) &#123; return function() &#123; console.log(value) &#125; &#125;(i)))&#125;// es6for (let i = 0; i &lt; 10; i++) &#123; func.push(function() &#123; console.log(i) &#125;)&#125; 模板字符串字符串拼接 123456//es5 var name = 'lux'console.log('hello' + name)//es6const name = 'lux'console.log(`hello $&#123;name&#125;`) //hello lux es6提供的常用的字符串方法 1234567// includes：判断是否包含然后直接返回布尔值let str = 'hahay'console.log(str.includes('y')) // true// repeat: 获取字符串重复n次let s = 'he'console.log(s.repeat(3)) // 'hehehe' 函数默认参数1234567891011121314//es5设置参数默认值//这种方式如果num=0就会出现num的值被默认200覆盖 function action(num) &#123; num = num || 200 //当传入num时，num为传入的值 //当没传入参数时，num即有了默认值200 return num &#125;//es6设置默认参数 function action(num = 200) &#123; console.log(num) &#125; action() //200 action(300) //300 箭头函数 三个特点: 不需要function关键字来创建函数 省略return关键字 继承当前上下文的 this 关键字 1234567//例如： [1,2,3].map( x =&gt; x + 1 ) //等同于： [1,2,3].map((function(x)&#123; return x + 1 &#125;).bind(this)) 拓展的对象功能对象初始化简写12345678let name = 'danw'let age = 27var d = &#123;name:name,age:age&#125;//以上代码es6可以简写为：let name = 'danw'let age = 27var d = &#123;name,age&#125; 对象初始化中方法赋值的简写12345678910111213const people = &#123; name: 'lux', getName: function() &#123; console.log(this.name) &#125;&#125;//以上代码简写如下：const people = &#123; name: 'lux', getName () &#123; console.log(this.name) &#125;&#125; Object.assign()实现对象浅复制12345var objA = &#123;a：1,b:2&#125;const obj = Object.assign(&#123;&#125;, objA)obj.c = 3console.log(obj) //&#123;a：1,b:2,c:3&#125;console.log(objA) //&#123;a：1,b:2&#125; objA的值不会被改变 更方便的数据访问–解构12345678910111213const people = &#123; name: 'lux', age: 20&#125;const name = people.nameconst age = people.ageconsole.log(name + ' --- ' + age)//对象解构取值const &#123;name,age&#125; = people//数组结构取值const color = ['red', 'blue']const [first, second] = color Spread Operator 展开运算符（…）123456789//数组const color = ['red', 'yellow']const colorful = [...color, 'green', 'pink']console.log(colorful) //[red, yellow, green, pink]//对象const alp = &#123; fist: 'a', second: 'b'&#125;const alphabets = &#123; ...alp, third: 'c' &#125;console.log(alphabets) //&#123; "fist": "a", "second": "b", "third": "c" import 和 export用法总结 当用export default people导出时，就用 import people 导入（不带大括号） 一个文件里，有且只能有一个export default。但可以有多个export。 当用export name 时，就用import { name }导入（记得带上大括号） 当一个文件里，既有一个export default people, 又有多个export name 或者 export age时，导入就用 import people, { name, age } 当一个文件里出现n多个 export 导出很多模块，导入时除了一个一个导入，也可以用import * as example Promise思考题1234567891011121314setTimeout(function() &#123; console.log(1) &#125;, 0); new Promise(function executor(resolve) &#123; console.log(2); for( var i=0 ; i&lt;10000 ; i++ ) &#123; i == 9999 &amp;&amp; resolve(); &#125; console.log(3); &#125;).then(function() &#123; console.log(4); &#125;); console.log(5);//输出：2 3 5 4 1 类似面试题：https://zhuanlan.zhihu.com/p/25407758]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>es6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[javascript的GC理解]]></title>
+    <url>%2F2018%2F02%2F24%2Fjavascript%E7%9A%84GC%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[js会将我们使用不到的变量销毁，怎么判断哪些变量是不会再使用的 全局变量是不会被销毁的，因为我们随时都可能会用到这个变量，所以不能被销毁。 函数内部的变量再函数执行完之后就会被销毁，但是如果这个函数有被外部的变量引用就不会销毁12345678910function a()&#123; var b = 0; return function()&#123; b ++; console.log(b); &#125;&#125;var d = a();d();//1d();//2]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>垃圾回收</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[call()、apply()、bind()区别]]></title>
+    <url>%2F2018%2F02%2F24%2Fcall()%E3%80%81apply()%E3%80%81bind()%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[执行的环境thisthis指向：this永远指向的是最后调用它的对象，也就是看它执行的时候是谁调用的 apply(),call(),bind()都是改变函数执行的环境（this）的，apply(),call()改变函数的this之后会立即执行函数，而bind()返回的是被修改this之后的新函数，在需要调用的时候去调用这个新函数，并且可以在执行的执行的时候去传递参数。 12345678var a = &#123; user:"danw", fn:function ()&#123; console.log(this.user) &#125;&#125;var b = a.fnb() //undefined 上面的代码之所以返回undefined是因为b在调用的时候是window.b(),this指向的是window，如果直接执行a.fn就会返回a里面的user1234567var a = &#123; user:"danw", fn:function ()&#123; console.log(this.user) &#125;&#125;a.fn() //danw 虽然这种方式可以正确的返回，但是有时间我们不得不将对象赋值给另一个变量，这时候就需要使用以下三种方法来改变this指向： call()12345678var a = &#123; user:"danw", fn:function ()&#123; console.log(this.user) &#125;&#125;var b = a.fnb.call(a) //danw 通过call方法将b添加到a执行环境中去执行，所有this就会指向acall方法还可以传递多个参数12345678var a = &#123; user:"danw", fn:function (p1,p2)&#123; console.log(this.user) &#125;&#125;var b = a.fnb.call(a,1,2) //danw apply()apply和call方法的效果一样，唯一不同的是在传递参数的时候是按照数组传递的。12345678var a = &#123; user:"danw", fn:function (p1,p2)&#123; console.log(this.user) &#125;&#125;var b = a.fnb.apply(a,[1,2]) //danw bind()bind()方法和apply(),call()方法一样会改变this指向，但是bind()方法不会立即去执行函数12345678var a = &#123; user:"danw", fn:function ()&#123; console.log(this.user) &#125;&#125;var b = a.fnb.bind(a) 执行上面代码发现并没有打印出结果，是因为b.bind(a)会返回一个新的函数123456789var a = &#123; user:"danw", fn:function ()&#123; console.log(this.user) &#125;&#125;var b = a.fnvar c = b.bind(a) //返回新的函数cc() //danw 执行函数c,会返回danw 所以谁bind()可以让对应的函数想什么时候执行就什么时候执行bind()也可以传递参数,并且可以在执行的时候再次追加参数12345678910var a = &#123; user:"danw", fn:function (p1,p2,p3)&#123; console.log(p1,p2,p3) //1,2,3 console.log(this.user) &#125;&#125;var b = a.fnvar c = b.bind(a,1) //返回新的函数cc(2,3) //danw 执行函数c,会返回danw]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>call() apply() bind()</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[promise深入理解]]></title>
+    <url>%2F2018%2F02%2F12%2Fpromise%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[promise是什么promise 是一个构造函数，自己身上有all、reject、resolve这些方法，原型上有then、catch这些方法，用Promise new出来的对象肯定就有then、catch方法。1234567var p = new Promise(function(resolve, reject)&#123; //做一些异步操作 setTimeout(function()&#123; console.log('执行完成'); resolve('随便什么数据'); &#125;, 2000);&#125;); *注意，这里知识new了一个Promise对象，并没有去调用它，但是传进去的函数已经之行了，所以在使用Promise的时候一般是包在一个函数中，使用的时候再去调用函数。 promise链式操作调用12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455function runAsync1()&#123; return new Promise(function(resolve, reject)&#123; //做一些异步操作 setTimeout(function()&#123; console.log('runAsync1执行完成'); resolve('runAsync1随便什么数据'); &#125;, 2000); &#125;);&#125;function runAsync2()&#123; return new Promise(function(resolve, reject)&#123; //做一些异步操作 setTimeout(function()&#123; console.log('runAsync2执行完成'); resolve('runAsync2随便什么数据'); &#125;, 2000); &#125;);&#125;function runAsync3()&#123; return new Promise(function(resolve, reject)&#123; //做一些异步操作 setTimeout(function()&#123; console.log('runAsync3执行完成'); resolve('runAsync3随便什么数据'); &#125;, 2000); &#125;);&#125;runAsync1().then(data =&gt; &#123; console.log(data)//runAsync1函数的resolve结果 return runAsync2()&#125;).then(data =&gt; &#123; console.log(data)//runAsync2函数的resolve结果 return runAsync3()&#125;).then(data =&gt; &#123; console.log(data) //runAsync3函数的resolve结果 &#125;)//如果当前函数执行不依赖于上一个函数的返回值，也可以这样写:runAsync1().then(runAsync2).then(runAsync3).then(data =&gt; &#123; console.log(data) //这里只能拿到runAsync3函数的resolve结果 &#125;)//当然这种方式也可以手动在每一个函数内部获取上一个函数的返回值，例如runAsync2想要使用runAsync1的返回值，runAsync2就得这样写：function runAsync2(data)&#123; console.log(data)//data为runAsync1函数的resolve结果 return new Promise(function(resolve, reject)&#123; //做一些异步操作 setTimeout(function()&#123; console.log('runAsync2执行完成'); resolve('runAsync2随便什么数据'); &#125;, 2000); &#125;);&#125; 异常处理使用catch处理异常then方法有两个参数，第一个是处理resolve的回调，第二个是处理reject的回调，catch和then的第二个参数一样也是指定reject回调的。以上面的列子说明： 可以在then的第二个参数里面处理error 1234567891011runAsync1().then(data =&gt; &#123; console.log(data)//runAsync1函数的resolve结果 return runAsync2()&#125;).then(data =&gt; &#123; console.log(data)//runAsync2函数的resolve结果 return runAsync3()&#125;).then(data =&gt; &#123; console.log(data) //runAsync3函数的resolve结果 &#125;,err=&gt;&#123; console.log(err)&#125;) 也可以放在then方法的外面使用catch处理，效果和写在then的第二个参数里面一样。不过它还有另外一个作用：在执行resolve的回调（也就是上面then中的第一个参数）时，如果抛出异常了（代码出错了），那么并不会报错卡死js，而是会进到这个catch方法中 1234567891011runAsync1().then(data =&gt; &#123; console.log(data) return runAsync2()&#125;).then(data =&gt; &#123; console.log(data) return runAsync3()&#125;).then(data =&gt; &#123; console.log(data) &#125;).catch(err =&gt; &#123; console.log(err)&#125;) *注意，不管runAsync1、runAsync2、runAsync3出现异常，都会走到catch中，如果runAsync1出现异常，runAsync2、runAsync3都不会执行。 Promise.all使用（谁执行的慢以谁为准执行回调，但是返回值是所有的返回值集合）并行执行一组异步操作，并且返回值是所有异步操作返回值的数组12345Promise .all([runAsync1(), runAsync2(), runAsync3()]) .then(function(results)&#123; console.log(results);&#125;); Promise.race（谁执行的快以谁为准执行回调）使用场景：可以用race给某个异步请求设置超时时间，并且在超时后执行相应的操作12345Promise.race([runAsync1(), runAsync2(), runAsync3()]).then(function(results)&#123; console.log(results);&#125;); 示例代码：12345678910111213141516171819202122232425262728//10秒之后执行function timeout10()&#123; var p = new Promise(function(resolve, reject)&#123; setTimeout(function()&#123; resolve('success'); &#125;, 4000); &#125;); return p;&#125;//延时函数，用于给请求计时function timeout5()&#123; var p = new Promise(function(resolve, reject)&#123; setTimeout(function()&#123; reject('请求超时'); &#125;, 5000); &#125;); return p;&#125;Promise.race([timeout10(), timeout5()]).then(function(results)&#123; console.log(results);&#125;).catch(function(reason)&#123; console.log(reason);&#125;); 参考帖子：http://www.cnblogs.com/lvdabao/p/es6-promise-1.html]]></content>
+      <categories>
+        <category>node</category>
+      </categories>
+      <tags>
+        <tag>js promise</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[mac下使用tree命令]]></title>
+    <url>%2F2018%2F02%2F10%2Fmac%E4%B8%8B%E4%BD%BF%E7%94%A8tree%E5%91%BD%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[mac下默认是没有 tree命令的，不过我们可以使用find命令模拟出tree命令的效果 如显示当前目录的 tree 的命令1find . -print | sed -e &apos;s;[^/]*/;|____;g;s;____|; |;g&apos; 使用alias 指定别名，将它变成一个命令 .bash_profile文件增加以下代码： 1alias tree=&quot;find . -print | sed -e &apos;s;[^/]*/;|____;g;s;____|; |;g&apos;&quot;]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>mac shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[setTimeout、setImmediate、process.nextTick区别]]></title>
+    <url>%2F2018%2F02%2F09%2FsetTimeout%E5%92%8CsetImmediate%E4%BB%A5%E5%8F%8Aprocess.nextTick%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[setTimeout()、setImmediate()、process.nextTick() setTimeoutsetTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。 setImmediatesetImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，执行顺序是不定的。 process.nextTickprocess.nextTick()方法可以在当前”执行栈”的尾部–&gt;下一次Event Loop（主线程读取”任务队列”）之前–&gt;触发process指定的回调函数。也就是说，它指定的任务总是发生在所有异步任务之前，当前主线程的末尾。（nextTick虽然也会异步执行，但是不会给其他io事件执行的任何机会） 最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate]]></content>
+      <categories>
+        <category>node</category>
+      </categories>
+      <tags>
+        <tag>node setTimeout</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Hello World]]></title>
     <url>%2F2018%2F02%2F05%2Fhello-world%2F</url>
     <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>

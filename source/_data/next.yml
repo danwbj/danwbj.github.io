@@ -51,7 +51,7 @@ footer:
   icon: user
 
   # If not defined, will be used `author` from Hexo main config.
-  copyright: 椰子菇凉.
+  copyright: wdd. All rights reserved.
   
 
   # -------------------------------------------------------------
@@ -235,8 +235,8 @@ excerpt_description: true
 # Automatically Excerpt. Not recommend.
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: false
-  length: 150
+  enable: true
+  length: 100
 
 # Post meta display settings
 post_meta:
@@ -265,6 +265,8 @@ post_wordcount:
 wechatpay: /images/wechatpay.png
 alipay: /images/alipay.png
 #bitcoin: /images/bitcoin.png
+
+use_motion: false  # 开启动画效果
 
 # Declare license on posts
 post_copyright:
@@ -717,7 +719,7 @@ pace: false
 pace_theme: pace-theme-minimal
 
 # Canvas-nest
-canvas_nest: true
+canvas_nest: false
 
 # three_waves
 three_waves: false

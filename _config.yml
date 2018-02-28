@@ -3,12 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 椰子菇凉
+title: 椰子菇凉的博客
 subtitle:
 description: 想到达明天现在就要启程！
 author: 椰子菇凉
-# language: en #zh-CN / zh-TW / ja / en
+# language: default
 language: zh-Hans
+# language: fr-FR
+# language: zh-hk
+# language: zh-tw
+# language: ru
+# language: de
 timezone:
 
 # URL
