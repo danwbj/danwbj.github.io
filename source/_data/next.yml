@@ -48,7 +48,7 @@ footer:
   #since: 2015
 
   # Icon between year and copyright info.
-  icon: user
+  # icon: user
 
   # If not defined, will be used `author` from Hexo main config.
   copyright: wdd. All rights reserved.
@@ -378,14 +378,15 @@ han: false
 
 # Duoshuo ShortName
 #duoshuo_shortname:
-duoshuo:
-  enable: true
-  shortname: 椰子菇凉
+# duoshuo:
+#   enable: true
+#   shortname: 椰子菇凉
 # Disqus
 disqus:
-  enable: false
-  shortname:
+  enable: true
+  shortname: "椰子菇凉"
   count: true
+# disqus_shortname: "椰子菇凉"
 
 # Hypercomments
 #hypercomments_id:

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="椰子菇凉的博客">
 <meta property="og:description" content="为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。  setTimeout() setInterval() setImmediate() process.nextTick()  猜测一下以下代码的运行结果12345setTimeout(() =&amp;gt; console.log(1));setImmediate(() =&amp;gt; console.log(2));process">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-01T06:22:07.000Z">
+<meta property="og:updated_time" content="2018-03-01T06:56:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Node四个定时器">
 <meta name="twitter:description" content="为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。  setTimeout() setInterval() setImmediate() process.nextTick()  猜测一下以下代码的运行结果12345setTimeout(() =&amp;gt; console.log(1));setImmediate(() =&amp;gt; console.log(2));process">
@@ -368,7 +368,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2018/02/09/Node四个定时器/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/09/Node四个定时器/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/09/Node四个定时器/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -416,15 +417,15 @@
 <li>追加在本轮循环的异步代码</li>
 <li>追加在次轮循环的异步代码</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面两行，次轮循环执行</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 下面两行，本轮循环执行</span></span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面两行，次轮循环执行 等待时间相同的情况下setTimeout先于setInterval执行</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setInterval(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 下面两行，本轮循环执行</span></span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</span><br></pre></td></tr></table></figure>
 <h3 id="setTimeout"><a href="#setTimeout" class="headerlink" title="setTimeout"></a>setTimeout</h3><p>次轮循环中执行</p>
 <p>setTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。</p>
 <h3 id="setImmediate"><a href="#setImmediate" class="headerlink" title="setImmediate"></a>setImmediate</h3><p>次轮循环中执行</p>
-<p>setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，执行顺序是不定的。</p>
+<p>setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，<strong><em>执行顺序是不定的</em></strong>。</p>
 <h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick"></a>process.nextTick</h3><p>本轮循环中执行</p>
 <p>同步代码执行完之后立即执行，所有异步里面最快的</p>
 <p>process.nextTick()方法可以在当前”执行栈”的尾部–&gt;下一次Event Loop（主线程读取”任务队列”）之前–&gt;触发process指定的回调函数。也就是说，它指定的任务总是发生在所有异步任务之前，当前主线程的末尾。（nextTick虽然也会异步执行，但是不会给其他io事件执行的任何机会）</p>
-<p>*最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate</p>
+<p><strong><em>最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate</em></strong></p>
 
       
     </div>
@@ -527,8 +528,11 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/09/Node四个定时器/"
-           data-title="Node四个定时器" data-url="http://www.wudd.top/2018/02/09/Node四个定时器/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     </div>
 
@@ -671,7 +675,7 @@
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">wdd. All rights reserved.</span>
 
@@ -823,28 +827,39 @@
 
   
 
+
   
+
     
+      <script id="dsq-count-scr" src="https://椰子菇凉.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.wudd.top/2018/02/09/Node四个定时器/';
+          this.page.identifier = '2018/02/09/Node四个定时器/';
+          this.page.title = 'Node四个定时器';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://椰子菇凉.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
   
 
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"椰子菇凉"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
 
-  
+
+
+	
+
 
 
 
 
+  
 
 
 
