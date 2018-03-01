@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="setTimeout()、setImmediate()、process.nextTick() setTimeoutsetTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。 setImmediatesetImmediate">
+<meta name="description" content="为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。  setTimeout() setInterval() setImmediate() process.nextTick()  猜测一下以下代码的运行结果12345setTimeout(() =&amp;gt; console.log(1));setImmediate(() =&amp;gt; console.log(2));process">
 <meta name="keywords" content="node setTimeout">
 <meta property="og:type" content="article">
-<meta property="og:title" content="setTimeout、setImmediate、process.nextTick区别">
-<meta property="og:url" content="http://www.wudd.top/2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/index.html">
+<meta property="og:title" content="Node四个定时器">
+<meta property="og:url" content="http://www.wudd.top/2018/02/09/Node四个定时器/index.html">
 <meta property="og:site_name" content="椰子菇凉的博客">
-<meta property="og:description" content="setTimeout()、setImmediate()、process.nextTick() setTimeoutsetTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。 setImmediatesetImmediate">
+<meta property="og:description" content="为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。  setTimeout() setInterval() setImmediate() process.nextTick()  猜测一下以下代码的运行结果12345setTimeout(() =&amp;gt; console.log(1));setImmediate(() =&amp;gt; console.log(2));process">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-10T05:43:48.000Z">
+<meta property="og:updated_time" content="2018-03-01T06:22:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="setTimeout、setImmediate、process.nextTick区别">
-<meta name="twitter:description" content="setTimeout()、setImmediate()、process.nextTick() setTimeoutsetTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。 setImmediatesetImmediate">
+<meta name="twitter:title" content="Node四个定时器">
+<meta name="twitter:description" content="为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。  setTimeout() setInterval() setImmediate() process.nextTick()  猜测一下以下代码的运行结果12345setTimeout(() =&amp;gt; console.log(1));setImmediate(() =&amp;gt; console.log(2));process">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.wudd.top/2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/"/>
+  <link rel="canonical" href="http://www.wudd.top/2018/02/09/Node四个定时器/"/>
 
 
 
 
 
-  <title>setTimeout、setImmediate、process.nextTick区别 | 椰子菇凉的博客</title>
+  <title>Node四个定时器 | 椰子菇凉的博客</title>
   
 
 
@@ -297,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.wudd.top/2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/">
+    <link itemprop="mainEntityOfPage" href="http://www.wudd.top/2018/02/09/Node四个定时器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="椰子菇凉">
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">setTimeout、setImmediate、process.nextTick区别</h1>
+          <h1 class="post-title" itemprop="name headline">Node四个定时器</h1>
         
 
         <div class="post-meta">
@@ -367,8 +367,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/" itemprop="commentCount"></span>
+                <a href="/2018/02/09/Node四个定时器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/09/Node四个定时器/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -401,11 +401,31 @@
       
 
       
-        <p>setTimeout()、setImmediate()、process.nextTick()</p>
-<h3 id="setTimeout"><a href="#setTimeout" class="headerlink" title="setTimeout"></a>setTimeout</h3><p>setTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。</p>
-<h3 id="setImmediate"><a href="#setImmediate" class="headerlink" title="setImmediate"></a>setImmediate</h3><p>setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，执行顺序是不定的。</p>
-<h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick"></a>process.nextTick</h3><p>process.nextTick()方法可以在当前”执行栈”的尾部–&gt;下一次Event Loop（主线程读取”任务队列”）之前–&gt;触发process指定的回调函数。也就是说，它指定的任务总是发生在所有异步任务之前，当前主线程的末尾。（nextTick虽然也会异步执行，但是不会给其他io事件执行的任何机会）</p>
-<h5 id="最后process-maxTickDepth-的缺省值是1000，如果超过会报exceed-callback-stack。官方认为在递归中用process-nextTick会造成饥饿event-loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate"><a href="#最后process-maxTickDepth-的缺省值是1000，如果超过会报exceed-callback-stack。官方认为在递归中用process-nextTick会造成饥饿event-loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate" class="headerlink" title="最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate"></a>最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate</h5>
+        <p>为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。</p>
+<ul>
+<li>setTimeout()</li>
+<li>setInterval()</li>
+<li>setImmediate()</li>
+<li>process.nextTick()</li>
+</ul>
+<p>猜测一下以下代码的运行结果<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">5</span>))();</span><br></pre></td></tr></table></figure></p>
+<p>运行结果如下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<p>同步代码先于异步代码执行</p>
+<p>异步任务分为：</p>
+<ul>
+<li>追加在本轮循环的异步代码</li>
+<li>追加在次轮循环的异步代码</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面两行，次轮循环执行</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 下面两行，本轮循环执行</span></span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="setTimeout"><a href="#setTimeout" class="headerlink" title="setTimeout"></a>setTimeout</h3><p>次轮循环中执行</p>
+<p>setTimeout()只是将事件插入了”任务队列”，必须等到当前代码（执行栈）执行完，主线程才会去执行它指定的回调函数。要是当前代码耗时很长，有可能要等很久，所以并没有办法保证，回调函数一定会在setTimeout()指定的时间执行。</p>
+<h3 id="setImmediate"><a href="#setImmediate" class="headerlink" title="setImmediate"></a>setImmediate</h3><p>次轮循环中执行</p>
+<p>setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数，和setTimeout(fn,0)的效果差不多，但是当他们同时在同一个事件循环中时，执行顺序是不定的。</p>
+<h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick"></a>process.nextTick</h3><p>本轮循环中执行</p>
+<p>同步代码执行完之后立即执行，所有异步里面最快的</p>
+<p>process.nextTick()方法可以在当前”执行栈”的尾部–&gt;下一次Event Loop（主线程读取”任务队列”）之前–&gt;触发process指定的回调函数。也就是说，它指定的任务总是发生在所有异步任务之前，当前主线程的末尾。（nextTick虽然也会异步执行，但是不会给其他io事件执行的任何机会）</p>
+<p>*最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate</p>
+
       
     </div>
     
@@ -507,8 +527,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/"
-           data-title="setTimeout、setImmediate、process.nextTick区别" data-url="http://www.wudd.top/2018/02/09/setTimeout和setImmediate以及process.nextTick的区别/">
+      <div class="ds-thread" data-thread-key="2018/02/09/Node四个定时器/"
+           data-title="Node四个定时器" data-url="http://www.wudd.top/2018/02/09/Node四个定时器/">
       </div>
     </div>
 
@@ -564,7 +584,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -586,7 +606,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -629,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#setTimeout"><span class="nav-number">1.</span> <span class="nav-text">setTimeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setImmediate"><span class="nav-number">2.</span> <span class="nav-text">setImmediate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-nextTick"><span class="nav-number">3.</span> <span class="nav-text">process.nextTick</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#最后process-maxTickDepth-的缺省值是1000，如果超过会报exceed-callback-stack。官方认为在递归中用process-nextTick会造成饥饿event-loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate"><span class="nav-number">3.0.1.</span> <span class="nav-text">最后process.maxTickDepth()的缺省值是1000，如果超过会报exceed callback stack。官方认为在递归中用process.nextTick会造成饥饿event loop，因为nextTick没有给其他异步事件执行的机会，递归中推荐用setImmediate</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#setTimeout"><span class="nav-number">1.</span> <span class="nav-text">setTimeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setImmediate"><span class="nav-number">2.</span> <span class="nav-text">setImmediate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-nextTick"><span class="nav-number">3.</span> <span class="nav-text">process.nextTick</span></a></li></ol></div>
             
 
           </div>
