@@ -1,7 +1,7 @@
 ---
 title: promise深入理解
 date: 2018-02-12 14:01:37
-tags: [js promise]
+tags: [js,promise]
 category: [node]
 ---
 #### promise是什么

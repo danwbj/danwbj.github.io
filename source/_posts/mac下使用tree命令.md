@@ -2,7 +2,7 @@
 title: mac下使用tree命令
 date: 2018-02-10 13:06:56
 category: [mac]
-tags: [mac shell]
+tags: [mac,shell]
 ---
 
 mac下默认是没有 tree命令的，不过我们可以使用find命令模拟出tree命令的效果

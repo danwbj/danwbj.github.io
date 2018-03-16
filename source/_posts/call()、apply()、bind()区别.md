@@ -1,7 +1,7 @@
 ---
 title: call()、apply()、bind()区别
 date: 2018-02-24 15:22:35
-tags: [call() apply() bind()]
+tags: [call(), apply(), bind()]
 category: [javascript]
 ---
 #### 执行的环境this

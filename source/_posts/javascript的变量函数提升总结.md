@@ -27,8 +27,8 @@ var v='Hello World';
 JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：
 ```javascript
 var x = 1;
-    console.log(x); // 1
- if (true) {
+console.log(x); // 1
+if (true) {
    var x = 2;
    console.log(x); //2
 }
@@ -50,7 +50,7 @@ function foo() {
 
 ```
 #### 变量提升
-变量提升 只是提升变量的声明，并不会把赋值也提升上来。
+变量提升 **_只是提升变量的声明，并不会把赋值也提升上来_**。
 我们定义三个变量：
 
 ```javascript
@@ -70,7 +70,8 @@ function foo() {
 })()
 ```
 ####  函数提升
-js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升
+js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是**_只有函数声明会被提升_**
+
 函数声明方式提升【成功】
 
 ```javascript
@@ -87,7 +88,7 @@ myTest();
 ```javascript
 function myTest(){
     foo();
-   var foo =function foo(){
+    var foo =function foo(){
         alert("我来自 foo");
     }
 }

@@ -1,7 +1,8 @@
 ---
 title: linux系统分类
 date: 2018-02-27 16:07:34
-tags:
+tags: [linux,操作系统]
+category: [linux]
 ---
 一般来说著名的linux系统基本上分两大类：
 * RedHat系列：Redhat、Centos、Fedora等

@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[javascript的变量函数提升总结]]></title>
-    <url>%2F2018%2F03%2F01%2Fjavascript%E7%9A%84%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87%E6%80%BB%E7%BB%93%2F</url>
-    <content type="text"><![CDATA[首先对比三段代码：12var v='Hello World';alert(v); //Hello World 1234var v='Hello World';(function()&#123; alert(v);&#125;)()//Hello World 12345var v='Hello World';(function()&#123; alert(v); var v='I love you';&#125;)()//undefined javascript作用域JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：1234567var x = 1; console.log(x); // 1 if (true) &#123; var x = 2; console.log(x); //2&#125; console.log(x);// 2 解决方案：在函数中创建一个临时的作用域，请像下面这样做12345678910function foo() &#123; var x = 1; if (x) &#123; (function () &#123; var x = 2; // some other code &#125;()); &#125; // x is still 1.&#125; 变量提升变量提升 只是提升变量的声明，并不会把赋值也提升上来。我们定义三个变量： 12345(function()&#123; var a='One'; var b='Two'; var c='Three';&#125;)() 实际上它是这样子的：123456(function()&#123; var a,b,c; a='One'; b='Two'; c='Three';&#125;)() 函数提升js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升函数声明方式提升【成功】 1234567function myTest()&#123; foo(); function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 函数表达式方式提升【失败】 1234567function myTest()&#123; foo(); var foo =function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 原文：http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html]]></content>
-      <categories>
-        <category>javascript</category>
-      </categories>
-      <tags>
-        <tag>变量函数提升</tag>
-      </tags>
+    <title><![CDATA[docker常用命令整理]]></title>
+    <url>%2F2018%2F03%2F16%2Fdocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86%2F</url>
+    <content type="text"><![CDATA[docker信息12345# 查看docker版本$ docker version# 查看docker系统信息$ docker info 镜像1234567891011121314151617181920212223242526# 查看镜像列表$ docker images# 删除镜像$ docker rmi name/id# 基于Dockerfile文件build镜像$ docker build [options] 镜像名 . 注意： .代表Dockerfile文件在当前路径 -t 为容器重新分配一个伪终端# 创建一个新的容器并跑一个镜像docker run [options] image -i 以交互模式运行 -t 为容器重新分配一个伪终端 -d 运行到后台 -p 80:80 端口映射 --name xxx 为容器指定一个名称# 保存images为一个tar文件$ docker save image_name -o name.tar或者$ docker save image_name &gt; name.tar#从一个tar文件加载images$ docker load &lt; name.tar 容器12345678910111213141516# 显示正在运行的容器$ docker ps -a 显示所有容器，包含不是运行中的容器# 停止运行中的容器$ docker stop 容器name/id#删除容器$ docker rm 容器name/id#进入到某个容器中$ docker exec -it 容器name/id /bin/bash #通过差异性创建一个新的image$ docker commit 容器id 新的镜像名eg: docker commit bf2eff778794 dandanwu/testimage:v2 Dockerfile编写DockerFile分为四部分组成：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令123456789101112131415161718192021222324252627282930313233343536373839404142#第一行必须指令基于的基础镜像FROM ubutu#维护者信息MAINTAINER docker_user docker_user@mail.com#使用哪个用户跑container USER#将文件&lt;src&gt;拷贝到container的文件系统对应的路径&lt;dest&gt;COPY file.js /home/file.js#将文件&lt;src&gt;拷贝到container的文件系统对应的路径&lt;dest&gt;ADD file.js /home/file.js#在终端中执行命令RUN apt-get update &amp;&amp; apt-get install -y ngnix RUN echo "\ndaemon off;"&gt;&gt;/etc/ngnix/nignix.conf#container内部服务开启的端口，主机上要用还得在启动container时，做host-container的端口映射EXPOSE 8017#设置环境变量ENV#切换目录用，可以多次切换(相当于cd命令)，对RUN,CMD,ENTRYPOINT生效WORKDIR ../#可以将本地文件夹或者其他container的文件夹挂载到container中。VOLUME#容器启动时执行指令#一个Dockerfile中只能有一条CMD命令，多条则只执行最后一条CMD#可替换性：当docker run command的命令匹配到CMD command时，会替换CMD执行的命令。CMD /usr/sbin/ngnix#需要执行多条命令的时候可以像下边这样写CMD [ "cmd1", "cmd2", "cmd3" ]#container启动时执行的命令，但是一个Dockerfile中只能有一条ENTRYPOINT命令，如果多条，则只执行最后一条#ENTRYPOINT没有CMD的可替换特性ENTRYPOINT /usr/sbin/ngnix]]></content>
   </entry>
   <entry>
     <title><![CDATA[js对象引用赋值引发数据可变的解决方案]]></title>
@@ -23,14 +17,38 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[javascript的变量函数提升总结]]></title>
+    <url>%2F2018%2F03%2F01%2Fjavascript%E7%9A%84%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87%E6%80%BB%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[首先对比三段代码：12var v='Hello World';alert(v); //Hello World 1234var v='Hello World';(function()&#123; alert(v);&#125;)()//Hello World 12345var v='Hello World';(function()&#123; alert(v); var v='I love you';&#125;)()//undefined javascript作用域JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：1234567var x = 1;console.log(x); // 1if (true) &#123; var x = 2; console.log(x); //2&#125; console.log(x);// 2 解决方案：在函数中创建一个临时的作用域，请像下面这样做12345678910function foo() &#123; var x = 1; if (x) &#123; (function () &#123; var x = 2; // some other code &#125;()); &#125; // x is still 1.&#125; 变量提升变量提升 只是提升变量的声明，并不会把赋值也提升上来。我们定义三个变量： 12345(function()&#123; var a='One'; var b='Two'; var c='Three';&#125;)() 实际上它是这样子的：123456(function()&#123; var a,b,c; a='One'; b='Two'; c='Three';&#125;)() 函数提升js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升 函数声明方式提升【成功】 1234567function myTest()&#123; foo(); function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 函数表达式方式提升【失败】 1234567function myTest()&#123; foo(); var foo =function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 原文：http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>变量函数提升</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[输出1-100之间的素数]]></title>
     <url>%2F2018%2F02%2F28%2F%E8%BE%93%E5%87%BA1-100%E4%B9%8B%E9%97%B4%E7%9A%84%E7%B4%A0%E6%95%B0%2F</url>
     <content type="text"><![CDATA[素数：除了1和它本身外没有其他因数，即，除了1和它本身外不能被其他数整除1—不是素数2—最小的素数3—2（判断是否能被2整除）4—2，3（判断是否能被2,3整除）5—2，3，4（判断是否能被2,3,4整除）6—2，3，4，5（判断是否能被2,3,4,5整除）… 以下是js代码的实现：123456789101112for(let i=2;i&lt;=100;i++)&#123; let flag = true; for(let j=2;j&lt;i;j++)&#123; if(i%j==0)&#123; flag = false; break; &#125; &#125; if(flag)&#123; console.log(i) &#125; &#125;]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>素数</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[linux系统分类]]></title>
     <url>%2F2018%2F02%2F27%2Flinux%E7%B3%BB%E7%BB%9F%E5%88%86%E7%B1%BB%2F</url>
     <content type="text"><![CDATA[一般来说著名的linux系统基本上分两大类： RedHat系列：Redhat、Centos、Fedora等 Debian系列：Debian、Ubuntu等 RedHat系列常见的安装包格式 rpm包,安装rpm包的命令是“rpm -参数” 包管理工具 yum 123456789yum的配置文件：/etc/yum.conf yum install gcc [centos] 更新：yum update 安装：yum install xxx 移除：yum remove xxx 清除已经安装过的档案（/var/cache/yum/）：yum clean all 搜寻：yum search xxx 列出所有档案：yum list 查询档案讯息：yum info xxx 支持tar包 Debian系列常见的安装包格式 deb包,安装deb包的命令是“dpkg -参数” 包管理工具 apt-get 1234更新软件包：apt-get update安装：apt-get install xxx移除：apt-get remove xxx更新安装过的包：apt-get upgrade xxx 支持tar包]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>操作系统</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[es6基础]]></title>
@@ -62,7 +80,9 @@
         <category>javascript</category>
       </categories>
       <tags>
-        <tag>call() apply() bind()</tag>
+        <tag>call()</tag>
+        <tag>apply()</tag>
+        <tag>bind()</tag>
       </tags>
   </entry>
   <entry>
@@ -73,7 +93,8 @@
         <category>node</category>
       </categories>
       <tags>
-        <tag>js promise</tag>
+        <tag>js</tag>
+        <tag>promise</tag>
       </tags>
   </entry>
   <entry>
@@ -84,7 +105,8 @@
         <category>mac</category>
       </categories>
       <tags>
-        <tag>mac shell</tag>
+        <tag>mac</tag>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -95,7 +117,8 @@
         <category>node</category>
       </categories>
       <tags>
-        <tag>node setTimeout</tag>
+        <tag>node</tag>
+        <tag>setTimeout</tag>
       </tags>
   </entry>
   <entry>

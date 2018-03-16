@@ -1,7 +1,7 @@
 ---
 title: Node四个定时器
 date: 2018-02-09 13:50:45
-tags: [node setTimeout]
+tags: [node,setTimeout]
 category: [node]
 ---
 为了协调异步任务，Node 提供了四个定时器，让任务可以在指定的时间运行。

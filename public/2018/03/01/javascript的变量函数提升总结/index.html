@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="椰子菇凉的博客">
 <meta property="og:description" content="首先对比三段代码：12var v=&apos;Hello World&apos;;alert(v); //Hello World 1234var v=&apos;Hello World&apos;;(function()&amp;#123;    alert(v);&amp;#125;)()//Hello World 12345var v=&apos;Hello World&apos;;(function()&amp;#123;    alert(v);    var v=&apos;I">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-01T02:56:26.000Z">
+<meta property="og:updated_time" content="2018-03-01T09:07:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="javascript的变量函数提升总结">
 <meta name="twitter:description" content="首先对比三段代码：12var v=&apos;Hello World&apos;;alert(v); //Hello World 1234var v=&apos;Hello World&apos;;(function()&amp;#123;    alert(v);&amp;#125;)()//Hello World 12345var v=&apos;Hello World&apos;;(function()&amp;#123;    alert(v);    var v=&apos;I">
@@ -405,15 +405,16 @@
         <p>首先对比三段代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v=<span class="string">'Hello World'</span>;</span><br><span class="line">alert(v); <span class="comment">//Hello World</span></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v=<span class="string">'Hello World'</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(v);</span><br><span class="line">&#125;)()<span class="comment">//Hello World</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v=<span class="string">'Hello World'</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(v);</span><br><span class="line">    <span class="keyword">var</span> v=<span class="string">'I love you'</span>;</span><br><span class="line">&#125;)()<span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
-<h4 id="javascript作用域"><a href="#javascript作用域" class="headerlink" title="javascript作用域"></a>javascript作用域</h4><p>JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(x); <span class="comment">// 1</span></span><br><span class="line"> <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line">   <span class="built_in">console</span>.log(x); <span class="comment">//2</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="built_in">console</span>.log(x);<span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="javascript作用域"><a href="#javascript作用域" class="headerlink" title="javascript作用域"></a>javascript作用域</h4><p>JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(x); <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line">   <span class="built_in">console</span>.log(x); <span class="comment">//2</span></span><br><span class="line">&#125;</span><br><span class="line"> <span class="built_in">console</span>.log(x);<span class="comment">// 2</span></span><br></pre></td></tr></table></figure></p>
 <p>解决方案：<br>在函数中创建一个临时的作用域，请像下面这样做<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (x) &#123;</span><br><span class="line">        (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line">            <span class="comment">// some other code</span></span><br><span class="line">        &#125;());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// x is still 1.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>变量提升 只是提升变量的声明，并不会把赋值也提升上来。<br>我们定义三个变量：</p>
+<h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><p>变量提升 <strong><em>只是提升变量的声明，并不会把赋值也提升上来</em></strong>。<br>我们定义三个变量：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a=<span class="string">'One'</span>;</span><br><span class="line">    <span class="keyword">var</span> b=<span class="string">'Two'</span>;</span><br><span class="line">    <span class="keyword">var</span> c=<span class="string">'Three'</span>;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
 <p>实际上它是这样子的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a,b,c;</span><br><span class="line">    a=<span class="string">'One'</span>;</span><br><span class="line">    b=<span class="string">'Two'</span>;</span><br><span class="line">    c=<span class="string">'Three'</span>;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
-<h4 id="函数提升"><a href="#函数提升" class="headerlink" title="函数提升"></a>函数提升</h4><p>js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升<br>函数声明方式提升【成功】</p>
+<h4 id="函数提升"><a href="#函数提升" class="headerlink" title="函数提升"></a>函数提升</h4><p>js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是<strong><em>只有函数声明会被提升</em></strong></p>
+<p>函数声明方式提升【成功】</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    foo();</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        alert(<span class="string">"我来自 foo"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myTest();</span><br></pre></td></tr></table></figure>
 <p>函数表达式方式提升【失败】</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    foo();</span><br><span class="line">   <span class="keyword">var</span> foo =<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        alert(<span class="string">"我来自 foo"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myTest();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTest</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    foo();</span><br><span class="line">    <span class="keyword">var</span> foo =<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        alert(<span class="string">"我来自 foo"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">myTest();</span><br></pre></td></tr></table></figure>
 <p>原文：<a href="http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html" target="_blank" rel="noopener">http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html</a></p>
 
       
@@ -474,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/01/js对象引用赋值引发数据可变的解决方案/" rel="next" title="js对象引用赋值引发数据可变的解决方案">
-                <i class="fa fa-chevron-left"></i> js对象引用赋值引发数据可变的解决方案
+              <a href="/2018/02/28/输出1-100之间的素数/" rel="next" title="输出1-100之间的素数">
+                <i class="fa fa-chevron-left"></i> 输出1-100之间的素数
               </a>
             
           </div>
@@ -483,6 +484,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/js对象引用赋值引发数据可变的解决方案/" rel="prev" title="js对象引用赋值引发数据可变的解决方案">
+                js对象引用赋值引发数据可变的解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -573,7 +578,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -584,7 +589,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -595,7 +600,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
