@@ -1,7 +1,8 @@
 ---
 title: docker常用命令整理
 date: 2018-03-16 14:15:35
-tags:
+tags: [docker ]
+category: [docker]
 ---
 #### docker信息
 ```bash
