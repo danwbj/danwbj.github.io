@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[js实现插入排序算法]]></title>
+    <url>%2F2018%2F03%2F22%2Fjs%E5%AE%9E%E7%8E%B0%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[原理：从下标1开始，current=array[i],对数组的前i-1项进行检查，如果存在大于current值，将此值往后移，赋值给下一项 以下是js代码的实现：12345678910111213141516function sort(arr) &#123; for (let i = 1; i &lt; arr.length; i++)&#123; let current = arr[i] var index = i;//记录要被插入的下标 for (let j = i-1; j &gt;= 0; j--)&#123; if (current &lt; arr[j]) &#123; arr[j + 1] = arr[j] index = j &#125; &#125; arr[index] = current &#125; return arr&#125;let arr = [34,8,64,51,32,21]console.log(sort(arr))]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>插入排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[js实现冒泡排序算法]]></title>
+    <url>%2F2018%2F03%2F22%2Fjs%E5%AE%9E%E7%8E%B0%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[原理：将前后两个数进行比较，较大或者较小的往后放例如：let numbers={ 1,5,3,6,4,9,8,0,7,2}第一轮比较：第一次比较：1，5，3，6，4，9，8，0，7，2第一个数不大于第二个数，不调换位置 第二次比较：1，3，5，6，4，9，8，0，7，2第二个数大于第三个数，调换位置 第三次比较：1，3，5，6，4，9，8，0，7，2 第三个数不大于第四个数，不调换位置 第四次比较：1，3，5，4，6，9，8，0，7，2 第四个数大于第五个数，调换位置...以此类推 第九次比较：1，3，5，4，6，8，0，7，2，9第九个数大于第十个数，调换位置 第二轮比较：比较次数8次 第三轮比较：比较次数7次...以此类推 第九轮比较1次从上面的分析我们可以看出我们排10个数需要比较九轮，每一轮比较由9次递减到1次 以下是js代码的实现：1234567891011121314var arr = [2, 10, 3, 4, 1, 7, 5, 6, 9, 8]function sort(arr) &#123; for (let i = 0; i &lt; arr.length-1; i++)&#123; for (let j = 0; j &lt; arr.length-1-i; j++)&#123; let temp = arr[j] if (arr[j] &gt; arr[j + 1]) &#123; arr[j] = arr[j + 1] arr[j+1] = temp &#125; &#125; &#125;&#125;sort(arr)console.log(arr)]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>冒泡排序</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[docker常用命令整理]]></title>
     <url>%2F2018%2F03%2F16%2Fdocker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86%2F</url>
     <content type="text"><![CDATA[docker信息12345# 查看docker版本$ docker version# 查看docker系统信息$ docker info 镜像1234567891011121314151617181920212223242526# 查看镜像列表$ docker images# 删除镜像$ docker rmi name/id# 基于Dockerfile文件build镜像$ docker build [options] 镜像名 . 注意： .代表Dockerfile文件在当前路径 -t 为容器重新分配一个伪终端# 创建一个新的容器并跑一个镜像docker run [options] image -i 以交互模式运行 -t 为容器重新分配一个伪终端 -d 运行到后台 -p 80:80 端口映射 --name xxx 为容器指定一个名称# 保存images为一个tar文件$ docker save image_name -o name.tar或者$ docker save image_name &gt; name.tar#从一个tar文件加载images$ docker load &lt; name.tar 容器12345678910111213141516# 显示正在运行的容器$ docker ps -a 显示所有容器，包含不是运行中的容器# 停止运行中的容器$ docker stop 容器name/id#删除容器$ docker rm 容器name/id#进入到某个容器中$ docker exec -it 容器name/id /bin/bash #通过差异性创建一个新的image$ docker commit 容器id 新的镜像名eg: docker commit bf2eff778794 dandanwu/testimage:v2 Dockerfile编写DockerFile分为四部分组成：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令123456789101112131415161718192021222324252627282930313233343536373839404142#第一行必须指令基于的基础镜像FROM ubutu#维护者信息MAINTAINER docker_user docker_user@mail.com#使用哪个用户跑container USER#将文件&lt;src&gt;拷贝到container的文件系统对应的路径&lt;dest&gt;COPY file.js /home/file.js#将文件&lt;src&gt;拷贝到container的文件系统对应的路径&lt;dest&gt;ADD file.js /home/file.js#在终端中执行命令RUN apt-get update &amp;&amp; apt-get install -y ngnix RUN echo "\ndaemon off;"&gt;&gt;/etc/ngnix/nignix.conf#container内部服务开启的端口，主机上要用还得在启动container时，做host-container的端口映射EXPOSE 8017#设置环境变量ENV#切换目录用，可以多次切换(相当于cd命令)，对RUN,CMD,ENTRYPOINT生效WORKDIR ../#可以将本地文件夹或者其他container的文件夹挂载到container中。VOLUME#容器启动时执行指令#一个Dockerfile中只能有一条CMD命令，多条则只执行最后一条CMD#可替换性：当docker run command的命令匹配到CMD command时，会替换CMD执行的命令。CMD /usr/sbin/ngnix#需要执行多条命令的时候可以像下边这样写CMD [ "cmd1", "cmd2", "cmd3" ]#container启动时执行的命令，但是一个Dockerfile中只能有一条ENTRYPOINT命令，如果多条，则只执行最后一条#ENTRYPOINT没有CMD的可替换特性ENTRYPOINT /usr/sbin/ngnix]]></content>
