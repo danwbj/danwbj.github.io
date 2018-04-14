@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[CentOS7安装配置Nginx]]></title>
+    <url>%2F2018%2F04%2F15%2FCentOS7%E9%83%A8%E7%BD%B2Nginx%2F</url>
+    <content type="text"><![CDATA[安装 安装nginx依赖包 123yum install opensslyum install zlibyum install pcre Nginx依赖项 1rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm 安装nginx 1yum install nginx 启动nginx 123service start nginx或者systemctl start nginx 配置主配置文件：/etc/nginx/conf.d/nginx.conf在主配置的include处可以修改自己的配置文件路径 12345678910111213141516171819202122232425262728293031323334user nginx;worker_processes 1;error_log /var/log/nginx/error.log warn;pid /var/run/nginx.pid;events &#123; worker_connections 1024;&#125;http &#123; include /etc/nginx/mime.types; default_type application/octet-stream; log_format main '$remote_addr - $remote_user [$time_local] "$request" ' '$status $body_bytes_sent "$http_referer" ' '"$http_user_agent" "$http_x_forwarded_for"'; access_log /var/log/nginx/access.log main; sendfile on; #tcp_nopush on; keepalive_timeout 65; #gzip on; #include /etc/nginx/conf.d/*.conf; // 默认配置文件位置; include /root/nginx/conf/*.conf; // 修改为自己的路径;&#125;]]></content>
+      <tags>
+        <tag>nginx</tag>
+        <tag>linux</tag>
+        <tag>CentOS7</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[搭建node的GraphQL服务端]]></title>
-    <url>%2F2018%2F04%2F03%2F%E6%90%AD%E5%BB%BAnode%E7%9A%84GraphQL%E6%9C%8D%E5%8A%A1%E7%AB%AF%2F</url>
+    <url>%2F2018%2F04%2F15%2F%E6%90%AD%E5%BB%BAnode%E7%9A%84GraphQL%E6%9C%8D%E5%8A%A1%E7%AB%AF%2F</url>
+    <content type="text"><![CDATA[GraphQL和传统的REST API相比查询更加灵活，GraphQL 简单来说就是：取哪些数据是由client来决定，GraphQL 中，client 直接对 server说想要什么数据，server负责精确的返回目标数据，以nodejs为例搭建一个简单地服务端。 GraphQL工作的大致流程 描述你的数据 12345type Project &#123; name: String tagline: String contributors: [User]&#125; 请求你所要的数据 12345&#123; project(name: &quot;GraphQL&quot;) &#123; tagline &#125;&#125; 得到可预测的结果 12345&#123; &quot;project&quot;: &#123; &quot;tagline&quot;: &quot;A query language for APIs&quot; &#125;&#125; 需求分析设计用户可以发表作品，可以对其他用户发表的作品投票 使用apollo-server-express初始化一个服务创建目录初始化项目123mkdir graphql_node_democd graphql_node_demonpm init 安装依赖1npm i express body-parser apollo-server-express graphql graphql-tools --save 在根目录下创建启动文件index.js1234567891011121314151617181920212223242526272829const express = require('express');const bodyParser = require('body-parser');const &#123; graphqlExpress, graphiqlExpress &#125; = require('apollo-server-express');const &#123; createServer &#125; = require('http');const PORT = process.env.PORT || 3000;const NODE_ENV = process.env.NODE_ENV || 'development'const start = async () =&gt; &#123; var app = express(); const buildOptions = async (req, res) =&gt; &#123; return &#123; context: &#123;&#125; &#125;; &#125;; app.use('/graphql', bodyParser.json(), graphqlExpress(buildOptions)); app.use('/graphiql', graphiqlExpress(&#123; endpointURL: '/graphql', &#125;)); const server = createServer(app); server.listen(PORT, () =&gt; &#123; console.log(`fmlp.$&#123;NODE_ENV&#125; GraphQL server running on port $&#123;PORT&#125;`) &#125;);&#125;;start(); 现在可以启动服务尝试一下1node index.js 在浏览器访问http://localhost:3000/graphiql 可以看到会报错，是因为还没有添加schema 增加schema创建一个schema文件夹，并在文件夹里面抽创建两个文件，index.js、resolvers.jsindex.js里面定义我们的type，也就是描述数据，resolvers.js定义对返回数据的解析函数1234mkdir schemacd schematouch index.jstouch resolvers.js schema/index.js文件中我们定义三个type1234567891011121314151617181920const &#123;makeExecutableSchema&#125; = require('graphql-tools');const resolvers = require('./resolvers');// 在这里定义所有的类型const typeDefs = ` type Link &#123; id: ID! url: String! description: String! postedById:String! postedBy: User &#125; type Query &#123; allLinks: [Link!]! //定义了Query类型的查询，里面有一个查询所有Links,他的返回值是一个Link类型的数组 &#125; type User &#123; id: ID! name: String! email: String &#125;`; schema/resolvers.js文件中去执行查询并且返回客户端12345678910111213141516let links = [ &#123; id: 1, url: "http://url1", description: "link1", postedById:"userid1" &#125;]module.exports = &#123; Query: &#123; allLinks: (_, data) =&gt; &#123; return links &#125;, &#125;&#125;; ok 启动服务，刷新浏览器成功输入我们想要的查询 123456789//此处需要哪些字段写哪些字段&#123; allLinks &#123; id url description postedById &#125;&#125; 就可以返回123456789101112&#123; "data": &#123; "allLinks": [ &#123; "id": "1", "url": "http://url1", "description": "link1", "postedById": "userid1" &#125; ] &#125;&#125; 这就是一个简单的graphql查询另外Link中有一个字段postedBy是一个User类型，我们可以在resolvers.js中增加对Link中的User字段的解析，使Link列表可以返回每个Link是哪个用户发表的，这样实现了原始的关联查询在resolvers.js中增加以下代码：12345678910Link: &#123; postedBy: (&#123; postedById &#125;, data) =&gt; &#123; //此处需要根绝postedById查询数据库返回对用的user return &#123; id: postedById, name: "zhangsan", email: "zhangsan@11.com" &#125; &#125; &#125;, 由于我们没有对接真实的数据库，所以此处省略数据库查询的过程刷新浏览器现在的查询就可以是这样的12345678910111213&#123; allLinks &#123; id url description postedById postedBy&#123; id name email &#125; &#125;&#125; 返回值也变化了1234567891011121314151617&#123; "data": &#123; "allLinks": [ &#123; "id": "1", "url": "http://url1", "description": "link1", "postedById": "userid1", "postedBy": &#123; "id": "userid1", "name": "zhangsan", "email": "zhangsan@11.com" &#125; &#125; ] &#125;&#125; 这里只是实现了简单地查询操作，另外还有一些创建编辑删除的操作是需要用到Mutation类型来实现，具体不写出来，直接看github源码https://github.com/danwbj/graphql-server-apollo.git]]></content>
+      <categories>
+        <category>node</category>
+      </categories>
+      <tags>
+        <tag>GraphQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Linux环境下安装node]]></title>
+    <url>%2F2018%2F04%2F14%2FLinux%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85node%2F</url>
+    <content type="text"><![CDATA[下载1wget https://npm.taobao.org/mirrors/node/v8.9.3/node-v8.9.3-linux-x64.tar.xz 解压解压后的文件需要保留，压缩文件可以删除1tar -xzvf node-v8.9.3-linux-x64.tar.gz 创建软连接12ln -s /node-v8.9.3-linux-x64/bin/node /usr/local/bin/nodeln -s /node-v8.9.3-linux-x64/bin/npm/usr/local/bin/npm 测试安装是否成功12node -v 出现版本号即安装成功npm -v 出现版本号即安装成功 ok!]]></content>
+      <categories>
+        <category>node</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>node</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[linux命令学习笔记]]></title>
+    <url>%2F2018%2F04%2F10%2Flinux%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F</url>
     <content type="text"></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>常用命令</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[js实现插入排序算法]]></title>
@@ -39,17 +79,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[javascript的变量函数提升总结]]></title>
-    <url>%2F2018%2F03%2F01%2Fjavascript%E7%9A%84%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87%E6%80%BB%E7%BB%93%2F</url>
-    <content type="text"><![CDATA[首先对比三段代码：12var v='Hello World';alert(v); //Hello World 1234var v='Hello World';(function()&#123; alert(v);&#125;)()//Hello World 12345var v='Hello World';(function()&#123; alert(v); var v='I love you';&#125;)()//undefined javascript作用域JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：1234567var x = 1;console.log(x); // 1if (true) &#123; var x = 2; console.log(x); //2&#125; console.log(x);// 2 解决方案：在函数中创建一个临时的作用域，请像下面这样做12345678910function foo() &#123; var x = 1; if (x) &#123; (function () &#123; var x = 2; // some other code &#125;()); &#125; // x is still 1.&#125; 变量提升变量提升 只是提升变量的声明，并不会把赋值也提升上来。我们定义三个变量： 12345(function()&#123; var a='One'; var b='Two'; var c='Three';&#125;)() 实际上它是这样子的：123456(function()&#123; var a,b,c; a='One'; b='Two'; c='Three';&#125;)() 函数提升js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升 函数声明方式提升【成功】 1234567function myTest()&#123; foo(); function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 函数表达式方式提升【失败】 1234567function myTest()&#123; foo(); var foo =function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 原文：http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html]]></content>
-      <categories>
-        <category>javascript</category>
-      </categories>
-      <tags>
-        <tag>变量函数提升</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[js对象引用赋值引发数据可变的解决方案]]></title>
     <url>%2F2018%2F03%2F01%2Fjs%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%E8%B5%8B%E5%80%BC%E5%BC%95%E5%8F%91%E6%95%B0%E6%8D%AE%E5%8F%AF%E5%8F%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%2F</url>
     <content type="text"><![CDATA[js赋值（引用赋值）12345678910111213141516171819const student1 = &#123; school: 'Baidu', name: 'HOU Ce', birthdate: '1995-12-15',&#125;const changeStudent = (student, newName, newBday) =&gt; &#123; const newStudent = student; newStudent.name = newName; newStudent.birthdate = newBday; return newStudent;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; 创建了一个新的对象student2，但是老的对象student1也被改动了 深拷贝与浅拷贝的区别以Object.assign(浅拷贝)为列：123456var obj1 = &#123; a: 0, b: &#123; c: 0 &#125; &#125;var obj2 = Object.assign(&#123;&#125;, obj1)obj2.a = 1obj2.b.c = 1console.log(obj1) //&#123; a: 0, b: &#123; c: 1 &#125; &#125;console.log(obj2) //&#123; a: 1, b: &#123; c: 1 &#125; 为什么改变属性a不是指向同一个引用，而b.c指向了同一个引用?因为b不是简单地数据类型，Object.assign拷贝的时候是浅拷贝，只复制了{ c: 0 }的引用变量b,而a:1是简单类型，拷贝的时候拷贝的是值，所以当obj2.b.c改变的时候，因为obj1.b和obj2.b指向的是同一个内存地址，所以obj1.b.c的值也发生了改变。如果是深拷贝obj1.b.c的值就不会因为obj2.b.c改变而改变 解决方案（创建不可变数据）使用ES6当中的解构赋值(浅拷贝，而不是深拷贝)1234567891011121314const changeStudent = (student, newName, newBday) =&gt; &#123; return &#123; ...student, // 使用解构 name: newName, // 覆盖name属性 birthdate: newBday // 覆盖birthdate属性 &#125;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "HOU Ce", birthdate: "1995-12-15"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; Objects.assign(浅拷贝，而不是深拷贝)12345const changeStudent = (student, newName, newBday) =&gt; Object.assign(&#123;&#125;, student, &#123;name: newName, birthdate: newBday&#125;)const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');console.log(student1, student2); 使用第三方库 比如lodash中的merge函数 注意：对于数组来说，它里面的 .map, .filter或者.reduce函数不会改变原数组，而是产生并返回一个新数组。这和纯函数的思想不谋而合。 原文连接：https://juejin.im/post/58d0ff6f1b69e6006b8fd4e9]]></content>
@@ -58,6 +87,17 @@
       </categories>
       <tags>
         <tag>引用赋值</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[javascript的变量函数提升总结]]></title>
+    <url>%2F2018%2F03%2F01%2Fjavascript%E7%9A%84%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87%E6%80%BB%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[首先对比三段代码：12var v='Hello World';alert(v); //Hello World 1234var v='Hello World';(function()&#123; alert(v);&#125;)()//Hello World 12345var v='Hello World';(function()&#123; alert(v); var v='I love you';&#125;)()//undefined javascript作用域JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：1234567var x = 1;console.log(x); // 1if (true) &#123; var x = 2; console.log(x); //2&#125; console.log(x);// 2 解决方案：在函数中创建一个临时的作用域，请像下面这样做12345678910function foo() &#123; var x = 1; if (x) &#123; (function () &#123; var x = 2; // some other code &#125;()); &#125; // x is still 1.&#125; 变量提升变量提升 只是提升变量的声明，并不会把赋值也提升上来。我们定义三个变量： 12345(function()&#123; var a='One'; var b='Two'; var c='Three';&#125;)() 实际上它是这样子的：123456(function()&#123; var a,b,c; a='One'; b='Two'; c='Three';&#125;)() 函数提升js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升 函数声明方式提升【成功】 1234567function myTest()&#123; foo(); function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 函数表达式方式提升【失败】 1234567function myTest()&#123; foo(); var foo =function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 原文：http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>变量函数提升</tag>
       </tags>
   </entry>
   <entry>
