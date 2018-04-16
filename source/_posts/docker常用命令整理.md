@@ -32,6 +32,7 @@ docker run [options]  image
     -d 运行到后台
     -p 80:80	端口映射
     --name xxx 为容器指定一个名称
+    --restart=always 当容器退出时重新启动,默认为"no"
 
 # 保存images为一个tar文件
 $ docker save image_name -o name.tar
