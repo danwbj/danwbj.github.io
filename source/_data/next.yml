@@ -262,8 +262,8 @@ post_wordcount:
 
 # Reward
 #reward_comment: Donate comment here
-wechatpay: /images/wechatpay.png
-alipay: /images/alipay.png
+# wechatpay: /images/wechatpay.png
+# alipay: /images/alipay.png
 #bitcoin: /images/bitcoin.png
 
 use_motion: false  # 开启动画效果
