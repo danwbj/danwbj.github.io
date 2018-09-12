@@ -382,10 +382,10 @@ han: false
 #   enable: true
 #   shortname: 椰子菇凉
 # Disqus
-disqus:
-  enable: true
-  shortname: "椰子菇凉"
-  count: true
+# disqus:
+#   enable: true
+#   shortname: "椰子菇凉"
+#   count: true
 # disqus_shortname: "椰子菇凉"
 
 # Hypercomments
@@ -586,6 +586,10 @@ busuanzi_count:
   page_pv: true
   page_pv_header: <i class="fa fa-file-o"></i>
   page_pv_footer:
+
+  page_uv: true
+  page_uv_header: <i class="fa fa-user"></i>
+  page_uv_footer:
 
 
 # Tencent analytics ID
