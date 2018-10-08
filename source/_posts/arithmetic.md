@@ -168,3 +168,80 @@ function f(n) {
   return f(n - 1) + f(n - 2) + f(n - 3);
 }
 ```
+
+#### 递归遍历二叉树
+
+```javascript
+var tree = {
+  name: "root",
+  left: {
+    name: "Simon",
+    left: {
+      name: "Carl",
+      left: {
+        name: "Lee",
+        left: {
+          name: "Fate"
+        }
+      },
+      right: {
+        name: "Annie",
+        left: {
+          name: "Saber"
+        }
+      }
+    },
+    right: {
+      name: "Tony",
+      left: {
+        name: "Candy"
+      }
+    }
+  },
+  right: {
+    name: "right",
+    left: {
+      name: "Carl"
+    },
+    right: {
+      name: "Carl",
+      right: {
+        name: "Kai"
+      }
+    }
+  }
+};
+```
+
+```javascript
+//先序遍历
+function DLR(tree) {
+  console.log(tree.name);
+  if (tree.left) {
+    DLR(tree.left);
+  }
+  if (tree.right) {
+    DLR(tree.right);
+  }
+}
+//中序遍历
+function LDR(tree) {
+  if (tree.left) {
+    DLR(tree.left);
+  }
+  console.log(tree.name);
+  if (tree.right) {
+    DLR(tree.right);
+  }
+}
+//后序遍历
+function LRD(tree) {
+  if (tree.left) {
+    DLR(tree.left);
+  }
+  if (tree.right) {
+    DLR(tree.right);
+  }
+  console.log(tree.name);
+}
+```
