@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式，微服务,nomad,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Nomad 是一个管理机器集群并在集群上运行应用程序的工具。支持多种驱动程序（Docker、VMS、Java）运行 job,操作简单，多数据中心，可以跨数据中心调度。  安装在 nomad 官网找到适合自己系统的安装包，这里以 linux 为列首先下载二进制包并解压 12# wget https://releases.hashicorp.com/nomad/0.8.4/nomad_0.8.4_l">
+<meta name="keywords" content="分布式，微服务,nomad">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nomad初体验">
+<meta property="og:url" content="http://www.wudd.top/2018/06/13/1529235554495/index.html">
+<meta property="og:site_name" content="椰子菇凉的博客">
+<meta property="og:description" content="Nomad 是一个管理机器集群并在集群上运行应用程序的工具。支持多种驱动程序（Docker、VMS、Java）运行 job,操作简单，多数据中心，可以跨数据中心调度。  安装在 nomad 官网找到适合自己系统的安装包，这里以 linux 为列首先下载二进制包并解压 12# wget https://releases.hashicorp.com/nomad/0.8.4/nomad_0.8.4_l">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.wudd.top/images/nomad_ui1.png">
+<meta property="og:updated_time" content="2019-08-19T03:09:19.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nomad初体验">
+<meta name="twitter:description" content="Nomad 是一个管理机器集群并在集群上运行应用程序的工具。支持多种驱动程序（Docker、VMS、Java）运行 job,操作简单，多数据中心，可以跨数据中心调度。  安装在 nomad 官网找到适合自己系统的安装包，这里以 linux 为列首先下载二进制包并解压 12# wget https://releases.hashicorp.com/nomad/0.8.4/nomad_0.8.4_l">
+<meta name="twitter:image" content="http://www.wudd.top/images/nomad_ui1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.wudd.top/2018/06/13/1529235554495/">
+
+
+
+
+
+  <title>nomad初体验 | 椰子菇凉的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">椰子菇凉的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wudd.top/2018/06/13/1529235554495/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="椰子菇凉">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="椰子菇凉的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nomad初体验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T21:10:15+08:00">
+                2018-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/13/1529235554495/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/13/1529235554495/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Nomad 是一个管理机器集群并在集群上运行应用程序的工具。支持多种驱动程序（Docker、VMS、Java）运行 job,操作简单，多数据中心，可以跨数据中心调度。</p>
+</blockquote>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>在 nomad 官网找到适合自己系统的安装包，这里以 linux 为列<br>首先下载二进制包并解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># wget https://releases.hashicorp.com/nomad/0.8.4/nomad_0.8.4_linux_amd64.zip</span><br><span class="line">unzip nomad_0.8.4_linux_amd64.zip</span><br></pre></td></tr></table></figure>
+<p>配置环境变量，使其全局生效,编辑系统变量文件 /etc/profile 在末尾增加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># export PATH=$PATH:/nomad_path/  （此处填写解压后的nomad文件地址）</span><br></pre></td></tr></table></figure>
+<p>使环境变量立即生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># source /etc/profile</span><br></pre></td></tr></table></figure>
+<p>执行 nomad 命令，看到 nomad 提示，说明 nomad 安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Usage: nomad [-version] [-help] [-autocomplete-(un)install] &lt;command&gt; [args]</span><br><span class="line"></span><br><span class="line">Common commands:</span><br><span class="line">    run         Run a new job or update an existing job</span><br><span class="line">    stop        Stop a running job</span><br><span class="line">    status      Display the status output for a resource</span><br><span class="line">    alloc       Interact with allocations</span><br><span class="line">    job         Interact with jobs</span><br><span class="line">    node        Interact with nodes</span><br><span class="line">    agent       Runs a Nomad agent</span><br><span class="line"></span><br><span class="line">Other commands:</span><br><span class="line">    acl             Interact with ACL policies and tokens</span><br><span class="line">    agent-info      Display status information about the local agent</span><br><span class="line">    deployment      Interact with deployments</span><br><span class="line">    eval            Interact with evaluations</span><br><span class="line">    namespace       Interact with namespaces</span><br><span class="line">    operator        Provides cluster-level tools for Nomad operators</span><br><span class="line">    quota           Interact with quotas</span><br><span class="line">    sentinel        Interact with Sentinel policies</span><br><span class="line">    server          Interact with servers</span><br><span class="line">    ui              Open the Nomad Web UI</span><br><span class="line">    version         Prints the Nomad version</span><br></pre></td></tr></table></figure>
+<h3 id="启动-Agent"><a href="#启动-Agent" class="headerlink" title="启动 Agent"></a>启动 Agent</h3><p>为了简单，我们启动一个开发模式的 agent，开发模式可以快速启动 server 端和 client 端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"># nomad agent -dev</span><br><span class="line"></span><br><span class="line">==&gt; Starting Nomad agent...</span><br><span class="line">==&gt; Nomad agent configuration:</span><br><span class="line"></span><br><span class="line">                Client: true</span><br><span class="line">             Log Level: DEBUG</span><br><span class="line">                Region: global (DC: dc1)</span><br><span class="line">                Server: true</span><br><span class="line"></span><br><span class="line">==&gt; Nomad agent started! Log data will stream in below:</span><br><span class="line"></span><br><span class="line">    [INFO] serf: EventMemberJoin: nomad.global 127.0.0.1</span><br><span class="line">    [INFO] nomad: starting 4 scheduling worker(s) for [service batch _core]</span><br><span class="line">    [INFO] client: using alloc directory /tmp/NomadClient599911093</span><br><span class="line">    [INFO] raft: Node at 127.0.0.1:4647 [Follower] entering Follower state</span><br><span class="line">    [INFO] nomad: adding server nomad.global (Addr: 127.0.0.1:4647) (DC: dc1)</span><br><span class="line">    [WARN] fingerprint.network: Ethtool not found, checking /sys/net speed file</span><br><span class="line">    [WARN] raft: Heartbeat timeout reached, starting election</span><br><span class="line">    [INFO] raft: Node at 127.0.0.1:4647 [Candidate] entering Candidate state</span><br><span class="line">    [DEBUG] raft: Votes needed: 1</span><br><span class="line">    [DEBUG] raft: Vote granted. Tally: 1</span><br><span class="line">    [INFO] raft: Election won. Tally: 1</span><br><span class="line">    [INFO] raft: Node at 127.0.0.1:4647 [Leader] entering Leader state</span><br><span class="line">    [INFO] raft: Disabling EnableSingleNode (bootstrap)</span><br><span class="line">    [DEBUG] raft: Node 127.0.0.1:4647 updated peer set (2): [127.0.0.1:4647]</span><br><span class="line">    [INFO] nomad: cluster leadership acquired</span><br><span class="line">    [DEBUG] client: applied fingerprints [arch cpu host memory storage network]</span><br><span class="line">    [DEBUG] client: available drivers [docker exec java]</span><br><span class="line">    [DEBUG] client: node registration complete</span><br><span class="line">    [DEBUG] client: updated allocations at index 1 (0 allocs)</span><br><span class="line">    [DEBUG] client: allocs: (added 0) (removed 0) (updated 0) (ignore 0)</span><br><span class="line">    [DEBUG] client: state updated to ready</span><br></pre></td></tr></table></figure>
+<p>从输出可以看到我们已经成功启动了 nomad server 端和 client 端<br>访问本地 <a href="http://localhost:4646/" target="_blank" rel="noopener">http://localhost:4646/</a> 可以看到 Nomad 自带的 ui 界面</p>
+<p><img src="/images/nomad_ui1.png" alt="avatar"></p>
+<h3 id="集群节点"><a href="#集群节点" class="headerlink" title="集群节点"></a>集群节点</h3><p>打开另一个终端，运行一下命令可以看到 nomad 集群上已经注册的节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># nomad node status</span><br><span class="line">ID        DC   Name                   Class   Drain  Eligibility  Status</span><br><span class="line">53f694be  dc1  localhost.localdomain  &lt;none&gt;  false  eligible     ready</span><br></pre></td></tr></table></figure>
+<p>开发模式也启动了一个 server 端，所有运行下面的命令可以查看到 server 成员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># nomad server members</span><br><span class="line">Name                          Address    Port  Status  Leader  Protocol  Build  Datacenter  Region</span><br><span class="line">localhost.localdomain.global  127.0.0.1  4648  alive   true    2         0.8.1  dc1         global</span><br></pre></td></tr></table></figure>
+<p>如果需要停止 agent 只需要 Ctrl+C，就可以停止一个 agent</p>
+<h3 id="Nomad-Job"><a href="#Nomad-Job" class="headerlink" title="Nomad Job"></a>Nomad Job</h3><p>job 是用户在使用 Nomad 时与之交互的主要配置，是 Nomad 应该运行的任务的声明性规范，Job 有一个全局唯一的名称，有一个或者多个任务组。</p>
+<h4 id="运行一个-Job"><a href="#运行一个-Job" class="headerlink" title="运行一个 Job"></a>运行一个 Job</h4><p>进入到你的工作目录，使用 nomad inti 命令生成一个实例 job 配置文件:example.nomad</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># cd /root/nomad/</span><br><span class="line"># nomad init</span><br><span class="line">Example job file written to example.nomad</span><br></pre></td></tr></table></figure>
+<p>运行 job,可以看到 job 被分配到节点上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># nomad job run example.nomad</span><br><span class="line">==&gt; Monitoring evaluation &quot;301af722&quot;</span><br><span class="line">    Evaluation triggered by job &quot;example&quot;</span><br><span class="line">    Evaluation within deployment: &quot;56ea1af8&quot;</span><br><span class="line">    Allocation &quot;05e3f77a&quot; created: node &quot;53f694be&quot;, group &quot;cache&quot;</span><br><span class="line">    Evaluation status changed: &quot;pending&quot; -&gt; &quot;complete&quot;</span><br><span class="line">==&gt; Evaluation &quot;301af722&quot; finished with status &quot;complete&quot;</span><br></pre></td></tr></table></figure>
+<p>查看 Job 状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># nomad job status</span><br><span class="line">ID       Type     Priority  Status   Submit Date</span><br><span class="line">example  service  50        running  2018-06-13T19:28:21+08:00</span><br></pre></td></tr></table></figure>
+<p>如果想查看一个 Job 的详细信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># nomad server members</span><br><span class="line">Name                          Address    Port  Status  Leader  Protocol  Build  Datacenter  Region</span><br><span class="line">localhost.localdomain.global  127.0.0.1  4648  alive   true    2         0.8.1  dc1         global</span><br><span class="line">[root@localhost nomad_cluster]# nomad job status example</span><br><span class="line">ID            = example</span><br><span class="line">Name          = example</span><br><span class="line">Submit Date   = 2018-06-13T19:28:21+08:00</span><br><span class="line">Type          = service</span><br><span class="line">Priority      = 50</span><br><span class="line">Datacenters   = dc1</span><br><span class="line">Status        = running</span><br><span class="line">Periodic      = false</span><br><span class="line">Parameterized = false</span><br><span class="line"></span><br><span class="line">Summary</span><br><span class="line">Task Group  Queued  Starting  Running  Failed  Complete  Lost</span><br><span class="line">cache       0       0         1        0       0         0</span><br><span class="line"></span><br><span class="line">Latest Deployment</span><br><span class="line">ID          = 56ea1af8</span><br><span class="line">Status      = failed</span><br><span class="line">Description = Failed due to unhealthy allocations</span><br><span class="line"></span><br><span class="line">Deployed</span><br><span class="line">Task Group  Desired  Placed  Healthy  Unhealthy</span><br><span class="line">cache       1        1       0        1</span><br><span class="line"></span><br><span class="line">Allocations</span><br><span class="line">ID        Node ID   Task Group  Version  Desired  Status   Created    Modified</span><br><span class="line">05e3f77a  53f694be  cache       0        run      running  3m51s ago  51s ago</span><br></pre></td></tr></table></figure>
+<h4 id="修改一个-Job"><a href="#修改一个-Job" class="headerlink" title="修改一个 Job"></a>修改一个 Job</h4><p>现在我们编辑 example.nomad 文件中 count 的，设置为 3,这个参数的作用是指定要运行的任务组数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># The &quot;count&quot; parameter specifies the number of the task groups that should</span><br><span class="line"># be running under this group. This value must be non-negative and defaults</span><br><span class="line"># to 1.</span><br><span class="line">count = 3</span><br></pre></td></tr></table></figure>
+<p>运行 nomad job 命令可以看到如果我们更新了 job 会发生什么变化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># nomad job plan example.nomad</span><br><span class="line">+/- Job: &quot;example&quot;</span><br><span class="line">+/- Task Group: &quot;cache&quot; (2 create, 1 in-place update)</span><br><span class="line">  +/- Count: &quot;1&quot; =&gt; &quot;3&quot; (forces create)</span><br><span class="line">      Task: &quot;redis&quot;</span><br><span class="line"></span><br><span class="line">Scheduler dry-run:</span><br><span class="line">- All tasks successfully allocated.</span><br><span class="line"></span><br><span class="line">Job Modify Index: 9</span><br><span class="line">To submit the job with version verification run:</span><br><span class="line"></span><br><span class="line">nomad job run -check-index 9 example.nomad</span><br><span class="line"></span><br><span class="line">When running the job with the check-index flag, the job will only be run if the</span><br><span class="line">server side version matches the job modify index returned. If the index has</span><br><span class="line">changed, another user has modified the job and the plan&apos;s results are</span><br><span class="line">potentially invalid.</span><br></pre></td></tr></table></figure>
+<p>使用给出的更新命令去更新 job</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># nomad job run -check-index 9 example.nomad</span><br><span class="line">==&gt; Monitoring evaluation &quot;153899d5&quot;</span><br><span class="line">    Evaluation triggered by job &quot;example&quot;</span><br><span class="line">    Evaluation within deployment: &quot;d1734e35&quot;</span><br><span class="line">    Allocation &quot;fd9851d0&quot; created: node &quot;53f694be&quot;, group &quot;cache&quot;</span><br><span class="line">    Allocation &quot;05e3f77a&quot; modified: node &quot;53f694be&quot;, group &quot;cache&quot;</span><br><span class="line">    Allocation &quot;e6ca8a97&quot; created: node &quot;53f694be&quot;, group &quot;cache&quot;</span><br><span class="line">    Evaluation status changed: &quot;pending&quot; -&gt; &quot;complete&quot;</span><br><span class="line">==&gt; Evaluation &quot;153899d5&quot; finished with status &quot;complete&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="停止-job"><a href="#停止-job" class="headerlink" title="停止 job"></a>停止 job</h4><p>停止 job 使用 nomad stop 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># nomad stop example</span><br><span class="line">==&gt; Monitoring evaluation &quot;ffc6fddd&quot;</span><br><span class="line">    Evaluation triggered by job &quot;example&quot;</span><br><span class="line">    Evaluation within deployment: &quot;d1734e35&quot;</span><br><span class="line">    Evaluation status changed: &quot;pending&quot; -&gt; &quot;complete&quot;</span><br><span class="line">==&gt; Evaluation &quot;ffc6fddd&quot; finished with status &quot;complete&quot;</span><br></pre></td></tr></table></figure>
+<p>停止后，使用 nomad status 命令查看 Job 状态已经变为 dead 状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nomad_cluster]# nomad job  status</span><br><span class="line">ID       Type     Priority  Status          Submit Date</span><br><span class="line">example  service  50        dead (stopped)  2018-06-13T19:49:41+08:00</span><br></pre></td></tr></table></figure>
+<h3 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h3><p>现在开始我们搭建一个 nomad 集群，前边我们使用 dev 模式同时启动了一个 nomad server 以及 client 端，如果在生产环境，建议至少使用 3-5 台服务</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>我这里准备三台虚拟机</p>
+<table>
+<thead>
+<tr>
+<th>ip</th>
+<th>虚拟名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.211.55.4</td>
+<td>s1</td>
+</tr>
+<tr>
+<td>10.211.55.5</td>
+<td>s2</td>
+</tr>
+<tr>
+<td>10.211.55.6</td>
+<td>s3</td>
+</tr>
+</tbody>
+</table>
+<p>以下简称 s1,s2,s3</p>
+<h4 id="启动-server"><a href="#启动-server" class="headerlink" title="启动 server"></a>启动 server</h4><p>在 s1 虚机上工作目录创建服务器配置文件 server.hcl，内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># touch server.hcl</span><br><span class="line"># vi server.hcl</span><br><span class="line"></span><br><span class="line">data_dir = &quot;/tmp/server&quot;</span><br><span class="line"></span><br><span class="line">name = &quot;server1&quot;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  enabled = true</span><br><span class="line"></span><br><span class="line">  # Self-elect, should be 3 or 5 for production</span><br><span class="line">  bootstrap_expect = 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存，退出，启动 nomad server 代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># nomad agent -config server.hcl</span><br><span class="line">==&gt; Loaded configuration from server.hcl</span><br><span class="line">==&gt; Starting Nomad agent...</span><br><span class="line">==&gt; Nomad agent configuration:</span><br><span class="line"></span><br><span class="line">                Client: false</span><br><span class="line">             Log Level: INFO</span><br><span class="line">                Region: global (DC: dc1)</span><br><span class="line">                Server: true</span><br><span class="line">               Version: 0.8.1</span><br><span class="line"></span><br><span class="line">==&gt; Nomad agent started! Log data will stream in below:</span><br><span class="line"></span><br><span class="line">    2018/06/10 12:54:32 [INFO] raft: Initial configuration (index=0): []</span><br><span class="line">    2018/06/10 12:54:32 [INFO] raft: Node at 10.211.55.4:4647 [Follower] entering Follower state (Leader: &quot;&quot;)</span><br><span class="line">    2018/06/10 12:54:32 [INFO] serf: EventMemberJoin: server1.global 10.211.55.4</span><br><span class="line">    2018/06/10 12:54:32.125891 [INFO] nomad: starting 2 scheduling worker(s) for [service batch system _core]</span><br><span class="line">    2018/06/10 12:54:32.126270 [INFO] nomad: adding server server1.global (Addr: 10.211.55.4:4647) (DC: dc1)</span><br><span class="line">    2018/06/10 12:54:32.126983 [ERR] consul: error looking up Nomad servers: server.nomad: unable to query Consul datacenters: Get http://127.0.0.1:8500/v1/catalog/datacenters: dial tcp 127.0.0.1:8500: getsockopt: connection refused</span><br><span class="line">    2018/06/10 12:54:33 [WARN] raft: no known peers, aborting election</span><br><span class="line">    2018/06/10 12:54:42.238478 [ERR] worker: failed to dequeue evaluation: No cluster leader</span><br><span class="line">    2018/06/10 12:54:42.647826 [ERR] worker: failed to dequeue evaluation: No cluster leader</span><br><span class="line">    2018/06/10 12:54:47.530410 [ERR] worker: failed to dequeue evaluation: No cluster leader</span><br><span class="line">    2018/06/10 12:54:47.877889 [ERR] worker: failed to dequeue evaluation: No cluster leader</span><br></pre></td></tr></table></figure>
+<p>这里可以看到 agent 启动之后会去找 leader，由于我们配置的 bootstrap_expect 参数为 3，因此只有三个集群节点都启动之后，才回去选举一个 leader<br>接下来我们在 s2, s3 机器上也重复上面的操作，分别启动一个 server,为了区分，在三个配置文件中我们使用 name 区分，s1,s2,s3 配置文件中的 name 分别为 server1,server2,server</p>
+<p>三台机器上的 agent 都启动成功之后，我们使用 nomad join 命令将三个 server 连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在s2上执行</span><br><span class="line"># nomad server join 10.211.55.4</span><br><span class="line">在s3上执行</span><br><span class="line"># nomad server join 10.211.55.5</span><br></pre></td></tr></table></figure>
+<p>这样就把三个 server 组成了一个集群,并且他们已经选举了一个 leader</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># nomad server members</span><br><span class="line">Name            Address      Port  Status  Leader  Protocol  Build  Datacenter  Region</span><br><span class="line">server1.global  10.211.55.4  4648  alive   false   2         0.8.1  dc1         global</span><br><span class="line">server2.global  10.211.55.5  4648  alive   true    2         0.8.1  dc1         global</span><br><span class="line">server3.global  10.211.55.6  4648  alive   false   2         0.8.1  dc1         global</span><br></pre></td></tr></table></figure>
+<h4 id="启动-client"><a href="#启动-client" class="headerlink" title="启动 client"></a>启动 client</h4><p>在 s2 虚机上工作目录创建服务器配置文件 client1.hcl，内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># touch client1.hcl</span><br><span class="line"># vi client1.hcl</span><br><span class="line"></span><br><span class="line">log_level = &quot;DEBUG&quot;</span><br><span class="line"></span><br><span class="line">data_dir = &quot;/tmp/client1&quot;</span><br><span class="line"></span><br><span class="line">name = &quot;client1&quot;</span><br><span class="line"></span><br><span class="line">client &#123;</span><br><span class="line">  enabled = true</span><br><span class="line"></span><br><span class="line">  # For demo assume we are talking to server1. For production,</span><br><span class="line">  # this should be like &quot;nomad.service.consul:4647&quot; and a system</span><br><span class="line">  # like Consul used for service discovery.</span><br><span class="line">  servers = [&quot;10.211.55.5:4647&quot;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># Modify our port to avoid a collision with server1 and client1</span><br><span class="line">ports &#123;</span><br><span class="line">  http = 5656</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存，退出，启动 nomad client 代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nomad_cluster]# nomad agent -config client1.hcl</span><br><span class="line">==&gt; Loaded configuration from client1.hcl</span><br><span class="line">==&gt; Starting Nomad agent...</span><br><span class="line">==&gt; Nomad agent configuration:</span><br><span class="line"></span><br><span class="line">                Client: true</span><br><span class="line">             Log Level: DEBUG</span><br><span class="line">                Region: global (DC: dc1)</span><br><span class="line">                Server: false</span><br><span class="line">               Version: 0.8.1</span><br><span class="line"></span><br><span class="line">==&gt; Nomad agent started! Log data will stream in below:</span><br><span class="line"></span><br><span class="line">    2018/06/13 20:43:31.353729 [INFO] client: using state directory /tmp/client1/client</span><br><span class="line">    2018/06/13 20:43:31.354585 [INFO] client: using alloc directory /tmp/client1/alloc</span><br><span class="line">    2018/06/13 20:43:31.357777 [DEBUG] client.fingerprint_manager: built-in fingerprints: [arch cgroup consul cpu host memory network nomad signal storage vault env_aws env_gce]</span><br><span class="line">    2018/06/13 20:43:35.446947 [DEBUG] driver.docker: image &quot;nginx&quot; (sha256:cd5239a0906a6ccf0562354852fae04bc5b52d72a2aff9a871ddb6bd57553569) reference count incremented: 1</span><br><span class="line">    2018/06/13 20:43:35.452540 [DEBUG] client: starting task context for &apos;redis&apos; (alloc &apos;1bcb0f46-a710-769a-287e-7d432342f143&apos;)</span><br><span class="line">    2018/06/13 20:43:35.453826 [DEBUG] client: starting task runners for alloc &apos;1bcb0f46-a710-769a-287e-7d432342f143&apos;</span><br><span class="line">    2018/06/13 20:43:40.697028 [DEBUG] client: 3 evaluations triggered by node update</span><br><span class="line">    2018/06/13 20:43:40.697068 [DEBUG] client: state updated to ready</span><br><span class="line">    2018/06/13 20:43:40.869207 [DEBUG] client: state changed, updating node and re-registering.</span><br><span class="line">    2018/06/13 20:43:40.878128 [INFO] client: node registration complete</span><br></pre></td></tr></table></figure>
+<p>重复上面的操作在 s3 上面也启动一个 client 端，使用一下命令查看节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># nomad node-status</span><br><span class="line">ID        DC   Name     Class   Drain  Eligibility  Status</span><br><span class="line">85be1fd0  dc1  client1  &lt;none&gt;  false  eligible     ready</span><br><span class="line">d3f05cb0  dc1  client2  &lt;none&gt;  false  eligible     ready</span><br></pre></td></tr></table></figure>
+<p>现在我们已经有了一个集群，我们在 s1 上提交一个 job 测试一下我们的集群，使用 example.nomad，确保 count=3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># nomad job run example.nomad</span><br><span class="line">==&gt; Monitoring evaluation &quot;8095c3ec&quot;</span><br><span class="line">    Evaluation triggered by job &quot;example&quot;</span><br><span class="line">    Allocation &quot;7bc737e3&quot; created: node &quot;85be1fd0&quot;, group &quot;cache&quot;</span><br><span class="line">    Allocation &quot;22e53fa4&quot; created: node &quot;1a9b1e3d&quot;, group &quot;cache&quot;</span><br><span class="line">    Allocation &quot;2692e18b&quot; created: node &quot;1a9b1e3d&quot;, group &quot;cache&quot;</span><br><span class="line">    Evaluation within deployment: &quot;b44335b4&quot;</span><br><span class="line">    Allocation &quot;7bc737e3&quot; status changed: &quot;pending&quot; -&gt; &quot;running&quot;</span><br><span class="line">    Evaluation status changed: &quot;pending&quot; -&gt; &quot;complete&quot;</span><br><span class="line">==&gt; Evaluation &quot;8095c3ec&quot; finished with status &quot;complete&quot;</span><br></pre></td></tr></table></figure>
+<p>输出中看到调度程序为其中一个客户机节点分配了两个任务，剩下的任务分配给第二个客户端。也可以使用 nomad status 命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[root@centos-linux nomad_cluster]# nomad job status</span><br><span class="line">ID             Type     Priority  Status          Submit Date</span><br><span class="line">example        service  50        running         2018-06-13T20:57:26+08:00</span><br><span class="line">example-api-3  service  50        dead (stopped)  2018-06-12T23:16:09+08:00</span><br><span class="line">example-api-4  service  50        running         2018-06-12T23:18:55+08:00</span><br><span class="line">example-api-5  service  50        dead (stopped)  2018-06-12T23:36:26+08:00</span><br><span class="line">example-api-6  service  50        dead (stopped)  2018-06-13T00:55:06+08:00</span><br><span class="line">nginx          service  50        dead (stopped)  2018-06-10T00:04:52+08:00</span><br><span class="line">[root@centos-linux nomad_cluster]# nomad job status example</span><br><span class="line">ID            = example</span><br><span class="line">Name          = example</span><br><span class="line">Submit Date   = 2018-06-13T20:57:26+08:00</span><br><span class="line">Type          = service</span><br><span class="line">Priority      = 50</span><br><span class="line">Datacenters   = dc1</span><br><span class="line">Status        = running</span><br><span class="line">Periodic      = false</span><br><span class="line">Parameterized = false</span><br><span class="line"></span><br><span class="line">Summary</span><br><span class="line">Task Group  Queued  Starting  Running  Failed  Complete  Lost</span><br><span class="line">cache       0       0         3        0       3         0</span><br><span class="line"></span><br><span class="line">Latest Deployment</span><br><span class="line">ID          = b44335b4</span><br><span class="line">Status      = failed</span><br><span class="line">Description = Failed due to unhealthy allocations</span><br><span class="line"></span><br><span class="line">Deployed</span><br><span class="line">Task Group  Desired  Placed  Healthy  Unhealthy</span><br><span class="line">cache       3        3       0        3</span><br><span class="line"></span><br><span class="line">Allocations</span><br><span class="line">ID        Node ID   Task Group  Version  Desired  Status    Created        Modified</span><br><span class="line">22e53fa4  1a9b1e3d  cache       2        run      running   3d7h from now  3d7h from now</span><br><span class="line">2692e18b  1a9b1e3d  cache       2        run      running   3d7h from now  3d7h from now</span><br><span class="line">7bc737e3  85be1fd0  cache       2        run      running   3d7h from now  3d7h from now</span><br></pre></td></tr></table></figure>
+<p>到此，我们已经成功搭建了 nomad 集群，并在集群上运行了简单地 Job!</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式，微服务/" rel="tag"># 分布式，微服务</a>
+          
+            <a href="/tags/nomad/" rel="tag"># nomad</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/06/1525596645000/" rel="next" title="深入理解node的Event Loop">
+                <i class="fa fa-chevron-left"></i> 深入理解node的Event Loop
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/19/1529389603595/" rel="prev" title="consul入门">
+                consul入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="椰子菇凉">
+            
+              <p class="site-author-name" itemprop="name">椰子菇凉</p>
+              <p class="site-description motion-element" itemprop="description">想到达明天现在就要启程！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/danwbj" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-Agent"><span class="nav-number">2.</span> <span class="nav-text">启动 Agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群节点"><span class="nav-number">3.</span> <span class="nav-text">集群节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nomad-Job"><span class="nav-number">4.</span> <span class="nav-text">Nomad Job</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行一个-Job"><span class="nav-number">4.1.</span> <span class="nav-text">运行一个 Job</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改一个-Job"><span class="nav-number">4.2.</span> <span class="nav-text">修改一个 Job</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停止-job"><span class="nav-number">4.3.</span> <span class="nav-text">停止 job</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建集群"><span class="nav-number">5.</span> <span class="nav-text">搭建集群</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境准备"><span class="nav-number">5.1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-server"><span class="nav-number">5.2.</span> <span class="nav-text">启动 server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-client"><span class="nav-number">5.3.</span> <span class="nav-text">启动 client</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wdd. All rights reserved.</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://椰子菇凉.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://www.wudd.top/2018/06/13/1529235554495/';
+          this.page.identifier = '2018/06/13/1529235554495/';
+          this.page.title = 'nomad初体验';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://椰子菇凉.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
