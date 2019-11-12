@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="git,">
 
 
 
@@ -79,17 +79,23 @@
 
 
 
-<meta name="description" content="想到达明天现在就要启程！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://www.wudd.top/about/index.html">
+<meta name="description" content="git rebase常见的使用场景 git rebase 合并多次commit为一次https://blog.csdn.net/itfootball/article/details/44154121  查看历史  123456789101112131415161718192021222324$ git logcommit 415a0be986a48113829b3c60ee2387c6dbdc81">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git rebase常见的使用场景">
+<meta property="og:url" content="http://www.wudd.top/2019/11/12/git-rebase/index.html">
 <meta property="og:site_name" content="椰子菇凉的博客">
-<meta property="og:description" content="想到达明天现在就要启程！">
+<meta property="og:description" content="git rebase常见的使用场景 git rebase 合并多次commit为一次https://blog.csdn.net/itfootball/article/details/44154121  查看历史  123456789101112131415161718192021222324$ git logcommit 415a0be986a48113829b3c60ee2387c6dbdc81">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-19T03:09:19.528Z">
+<meta property="og:image" content="http://www.wudd.top/2019/11/12/git-rebase/media/15687736182821/15687738542162.jpg">
+<meta property="og:image" content="http://www.wudd.top/2019/11/12/git-rebase/media/15687736182821/15687738746543.jpg">
+<meta property="og:image" content="http://www.wudd.top/2019/11/12/git-rebase/media/15687736182821/15687739470378.jpg">
+<meta property="og:image" content="http://www.wudd.top/2019/11/12/git-rebase/media/15687736182821/15687739644947.jpg">
+<meta property="og:updated_time" content="2019-11-12T08:13:22.576Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="想到达明天现在就要启程！">
+<meta name="twitter:title" content="git rebase常见的使用场景">
+<meta name="twitter:description" content="git rebase常见的使用场景 git rebase 合并多次commit为一次https://blog.csdn.net/itfootball/article/details/44154121  查看历史  123456789101112131415161718192021222324$ git logcommit 415a0be986a48113829b3c60ee2387c6dbdc81">
+<meta name="twitter:image" content="http://www.wudd.top/2019/11/12/git-rebase/media/15687736182821/15687738542162.jpg">
 
 
 
@@ -119,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.wudd.top/about/">
+  <link rel="canonical" href="http://www.wudd.top/2019/11/12/git-rebase/">
 
 
 
 
 
-  <title>about | 椰子菇凉的博客</title>
+  <title>git rebase常见的使用场景 | 椰子菇凉的博客</title>
   
 
 
@@ -272,33 +278,234 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wudd.top/2019/11/12/git-rebase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="椰子菇凉">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="椰子菇凉的博客">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">git rebase常见的使用场景</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-12T16:11:28+08:00">
+                2019-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/12/git-rebase/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/12/git-rebase/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>git rebase常见的使用场景</p>
+<h3 id="git-rebase-合并多次commit为一次"><a href="#git-rebase-合并多次commit为一次" class="headerlink" title="git rebase 合并多次commit为一次"></a>git rebase 合并多次commit为一次</h3><p><a href="https://blog.csdn.net/itfootball/article/details/44154121" target="_blank" rel="noopener">https://blog.csdn.net/itfootball/article/details/44154121</a></p>
+<ul>
+<li>查看历史</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br><span class="line">commit 415a0be986a48113829b3c60ee2387c6dbdc81d8</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 20:11:29 2015 +0800</span><br><span class="line"></span><br><span class="line">    10-&gt;1</span><br><span class="line"></span><br><span class="line">commit ed09a6cbe0797275ceead3f8c8d829d01f0e604b</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:57:17 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.01.26</span><br><span class="line"></span><br><span class="line">commit 1821f6a1c1ed074fe886228cf33b3b3cb71819c4</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:53:28 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.01.26</span><br><span class="line"></span><br><span class="line">commit cc779982fc61e82ec494d6a5654417fa7194d748</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:40:24 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.1.26</span><br></pre></td></tr></table></figure>
+<p>我们看到上面有四次commit，如何将这个四次合并到一次呢？</p>
+<ul>
+<li>压缩</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~4</span><br></pre></td></tr></table></figure>
+<p>最后一个数字4代表压缩最后四次提交。<br>该命令执行后，会弹出vim的编辑窗口，4次提交的信息会倒序排列，最上面的是第四次提交，最下面的是最近一次提交</p>
+<p><img src="media/15687736182821/15687738542162.jpg" alt></p>
+<p>我们需要修改第2-4行的第一个单词pick为squash，这个意义为将最后三次的提交压缩到倒数第四次的提交，效果就是我们在pick所在的提交就已经做了4次动作，但是看起来就是一次而已：<br><img src="media/15687736182821/15687738746543.jpg" alt></p>
+<p>保存退出，git会一个一个压缩提交历史，如果有冲突，需要修改，修改的时候要注意，保留最新的历史，不然我们的修改就丢弃了。修改以后要记得敲下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+<p>如果想放弃这次压缩的话，执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --abort</span><br></pre></td></tr></table></figure>
+<p>所有冲突都已经解决了，会出现如下的编辑窗口<br><img src="media/15687736182821/15687739470378.jpg" alt></p>
+<p>这个时候我们需要修改一下合并后的commit的描述信息，我们将其描述为helloworld吧：<br><img src="media/15687736182821/15687739644947.jpg" alt></p>
+<p>保存退出后会看到我们完整的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase -i HEAD~4</span><br><span class="line">[detached HEAD 9097684] helloworld</span><br><span class="line"> Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line"> Committer: unknown &lt;hui.qian@HuiQianPC.spreadtrum.com&gt;</span><br><span class="line">Your name and email address were configured automatically based</span><br><span class="line">on your username and hostname. Please check that they are accurate.</span><br><span class="line">You can suppress this message by setting them explicitly:</span><br><span class="line"></span><br><span class="line">    git config --global user.name &quot;Your Name&quot;</span><br><span class="line">    git config --global user.email you@example.com</span><br><span class="line"></span><br><span class="line">After doing this, you may fix the identity used for this commit with:</span><br><span class="line"></span><br><span class="line">    git commit --amend --reset-author</span><br><span class="line"></span><br><span class="line"> 9 files changed, 25 insertions(+), 11 deletions(-)</span><br><span class="line">Successfully rebased and updated refs/heads/master.</span><br></pre></td></tr></table></figure>
+<p>现在我们来查看一下历史：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br><span class="line">commit 90976848524251b0a62376a9e45ea5c8aae25d87</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:40:24 2015 +0800</span><br><span class="line"></span><br><span class="line">    helloworld</span><br><span class="line"></span><br><span class="line">commit f57da9460196b950036fe4c2c8f7e4c9131ee04e</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:38:27 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.01.26</span><br><span class="line"></span><br><span class="line">commit 64104e057f48d6dd0e432af8b55cbccd0a09ee63</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 19:31:42 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.01.26</span><br><span class="line"></span><br><span class="line">commit 8499d4fa23c4395660d21e0b7dca873a7a3ef2b8</span><br><span class="line">Author: xuxu &lt;xuxu_1988@126.com&gt;</span><br><span class="line">Date:   Mon Jan 26 18:58:40 2015 +0800</span><br><span class="line"></span><br><span class="line">    2015.01.26</span><br></pre></td></tr></table></figure>
+<ul>
+<li>同步到远程仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push</span><br></pre></td></tr></table></figure>
+<p>执行之后会被拒绝，因为我们合并的历史记录已经在远程仓库之前了，你无法覆盖它。那怎么办？如果你确定你的合并过程都是正确无误的，那么就可以强制push：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<p>ok!</p>
+<ul>
+<li>遗留问题<br>1.这个方式的局限性是，我无法单独建立一个分支，然后在分支上做压缩动作，再合并到master上，在master上直接操作就存在很大的风险。也可能是我暂时还不会这么做吧，希望以后能找到答案。<br>2.直接强制的push到远程仓库也会存在问题，别人pull下来后是不是也会有问题。这个也需要探究<br>3.这种方式可以适用在本地分支之间的合并，你在dev分支中做了很多开发工作，修改历史很多，现在你开发完成了，你就要合并到master分支，然后提交到远程仓库。这个时候你可以用上面的流程先把dev的历史记录压缩一下，然后合并到master中。如果你是处在协同开发环境下，你还需要主要经常做远程仓库同步到master的动作，master的更新再rebase到dev分支。也需要探究</li>
+</ul>
+<h3 id="git-rebase-合并分支"><a href="#git-rebase-合并分支" class="headerlink" title="git rebase 合并分支"></a>git rebase 合并分支</h3><p><a href="https://xiaozhuanlan.com/topic/6873210549" target="_blank" rel="noopener">https://xiaozhuanlan.com/topic/6873210549</a></p>
+<p>dev-1分支<br>master分支</p>
+<ul>
+<li>基于master分支检出dev-1分支</li>
+<li>dev-1分支提交多次，但不要push到远端</li>
+</ul>
+<p>dev-1分支在提交的过程中有其他同事在master分支上提交了dev-2的更新，这个时候就需要将当前dev-1的变更变基到master</p>
+<ul>
+<li><p>切换到dev-1分支<br>git checkout dev-1</p>
+</li>
+<li><p>将当前dev-1的变更变基到master<br>git rebase master</p>
+</li>
+<li><p>遇到冲突手动解决冲突，然后继续执行rebase<br>git rebase –continue</p>
+</li>
+</ul>
+<p>rebase之后dev-1已经是基于最新的master了</p>
+<ul>
+<li>将dev-1推送至远端</li>
+<li>切换到master分支拉取dev-1分支</li>
+</ul>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/19/lodash-assign-extend-merge/" rel="next" title="lodash-assign-extend-merge">
+                <i class="fa fa-chevron-left"></i> lodash-assign-extend-merge
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -341,8 +548,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -414,6 +630,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-rebase-合并多次commit为一次"><span class="nav-number">1.</span> <span class="nav-text">git rebase 合并多次commit为一次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-rebase-合并分支"><span class="nav-number">2.</span> <span class="nav-text">git rebase 合并分支</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -592,9 +824,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://www.wudd.top/about/index.html';
-          this.page.identifier = 'about/index.html';
-          this.page.title = 'about';
+          this.page.url = 'http://www.wudd.top/2019/11/12/git-rebase/';
+          this.page.identifier = '2019/11/12/git-rebase/';
+          this.page.title = 'git rebase常见的使用场景';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://椰子菇凉.disqus.com/embed.js';
