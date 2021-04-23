@@ -207,17 +207,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[js对象引用赋值引发数据可变的解决方案]]></title>
-    <url>%2F2018%2F03%2F01%2F1519871336011%2F</url>
-    <content type="text"><![CDATA[js赋值（引用赋值）12345678910111213141516171819const student1 = &#123; school: 'Baidu', name: 'HOU Ce', birthdate: '1995-12-15',&#125;const changeStudent = (student, newName, newBday) =&gt; &#123; const newStudent = student; newStudent.name = newName; newStudent.birthdate = newBday; return newStudent;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; 创建了一个新的对象student2，但是老的对象student1也被改动了 深拷贝与浅拷贝的区别以Object.assign(浅拷贝)为列：123456var obj1 = &#123; a: 0, b: &#123; c: 0 &#125; &#125;var obj2 = Object.assign(&#123;&#125;, obj1)obj2.a = 1obj2.b.c = 1console.log(obj1) //&#123; a: 0, b: &#123; c: 1 &#125; &#125;console.log(obj2) //&#123; a: 1, b: &#123; c: 1 &#125; 为什么改变属性a不是指向同一个引用，而b.c指向了同一个引用?因为b不是简单地数据类型，Object.assign拷贝的时候是浅拷贝，只复制了{ c: 0 }的引用变量b,而a:1是简单类型，拷贝的时候拷贝的是值，所以当obj2.b.c改变的时候，因为obj1.b和obj2.b指向的是同一个内存地址，所以obj1.b.c的值也发生了改变。如果是深拷贝obj1.b.c的值就不会因为obj2.b.c改变而改变 解决方案（创建不可变数据）使用ES6当中的解构赋值(浅拷贝，而不是深拷贝)1234567891011121314const changeStudent = (student, newName, newBday) =&gt; &#123; return &#123; ...student, // 使用解构 name: newName, // 覆盖name属性 birthdate: newBday // 覆盖birthdate属性 &#125;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "HOU Ce", birthdate: "1995-12-15"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; Objects.assign(浅拷贝，而不是深拷贝)12345const changeStudent = (student, newName, newBday) =&gt; Object.assign(&#123;&#125;, student, &#123;name: newName, birthdate: newBday&#125;)const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');console.log(student1, student2); 使用第三方库 比如lodash中的merge函数 注意：对于数组来说，它里面的 .map, .filter或者.reduce函数不会改变原数组，而是产生并返回一个新数组。这和纯函数的思想不谋而合。 原文连接：https://juejin.im/post/58d0ff6f1b69e6006b8fd4e9]]></content>
-      <categories>
-        <category>javascript</category>
-      </categories>
-      <tags>
-        <tag>引用赋值</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[javascript的变量函数提升总结]]></title>
     <url>%2F2018%2F03%2F01%2F1519871336000%2F</url>
     <content type="text"><![CDATA[首先对比三段代码：12var v='Hello World';alert(v); //Hello World 1234var v='Hello World';(function()&#123; alert(v);&#125;)()//Hello World 12345var v='Hello World';(function()&#123; alert(v); var v='I love you';&#125;)()//undefined javascript作用域JavaScript是函数级作用域(function-level scope)，并没有块级作用域,因此在代码块中并不会创建一个新的作用域。只有函数才会创建新的作用域，这样块里面的变量会影响到外部作用域，比如if语句：1234567var x = 1;console.log(x); // 1if (true) &#123; var x = 2; console.log(x); //2&#125; console.log(x);// 2 解决方案：在函数中创建一个临时的作用域，请像下面这样做12345678910function foo() &#123; var x = 1; if (x) &#123; (function () &#123; var x = 2; // some other code &#125;()); &#125; // x is still 1.&#125; 变量提升变量提升 只是提升变量的声明，并不会把赋值也提升上来。我们定义三个变量： 12345(function()&#123; var a='One'; var b='Two'; var c='Three';&#125;)() 实际上它是这样子的：123456(function()&#123; var a,b,c; a='One'; b='Two'; c='Three';&#125;)() 函数提升js中函数的定义有两种，函数声明方式和函数表达式方式，需要注意的是只有函数声明会被提升 函数声明方式提升【成功】 1234567function myTest()&#123; foo(); function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 函数表达式方式提升【失败】 1234567function myTest()&#123; foo(); var foo =function foo()&#123; alert("我来自 foo"); &#125;&#125;myTest(); 原文：http://www.cnblogs.com/damonlan/archive/2012/07/01/2553425.html]]></content>
@@ -226,6 +215,17 @@
       </categories>
       <tags>
         <tag>变量函数提升</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[js对象引用赋值引发数据可变的解决方案]]></title>
+    <url>%2F2018%2F03%2F01%2F1519871336011%2F</url>
+    <content type="text"><![CDATA[js赋值（引用赋值）12345678910111213141516171819const student1 = &#123; school: 'Baidu', name: 'HOU Ce', birthdate: '1995-12-15',&#125;const changeStudent = (student, newName, newBday) =&gt; &#123; const newStudent = student; newStudent.name = newName; newStudent.birthdate = newBday; return newStudent;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; 创建了一个新的对象student2，但是老的对象student1也被改动了 深拷贝与浅拷贝的区别以Object.assign(浅拷贝)为列：123456var obj1 = &#123; a: 0, b: &#123; c: 0 &#125; &#125;var obj2 = Object.assign(&#123;&#125;, obj1)obj2.a = 1obj2.b.c = 1console.log(obj1) //&#123; a: 0, b: &#123; c: 1 &#125; &#125;console.log(obj2) //&#123; a: 1, b: &#123; c: 1 &#125; 为什么改变属性a不是指向同一个引用，而b.c指向了同一个引用?因为b不是简单地数据类型，Object.assign拷贝的时候是浅拷贝，只复制了{ c: 0 }的引用变量b,而a:1是简单类型，拷贝的时候拷贝的是值，所以当obj2.b.c改变的时候，因为obj1.b和obj2.b指向的是同一个内存地址，所以obj1.b.c的值也发生了改变。如果是深拷贝obj1.b.c的值就不会因为obj2.b.c改变而改变 解决方案（创建不可变数据）使用ES6当中的解构赋值(浅拷贝，而不是深拷贝)1234567891011121314const changeStudent = (student, newName, newBday) =&gt; &#123; return &#123; ...student, // 使用解构 name: newName, // 覆盖name属性 birthdate: newBday // 覆盖birthdate属性 &#125;&#125;const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');// both students will have the name propertiesconsole.log(student1, student2);// Object &#123;school: "Baidu", name: "HOU Ce", birthdate: "1995-12-15"&#125; // Object &#123;school: "Baidu", name: "YAN Haijing", birthdate: "1990-11-10"&#125; Objects.assign(浅拷贝，而不是深拷贝)12345const changeStudent = (student, newName, newBday) =&gt; Object.assign(&#123;&#125;, student, &#123;name: newName, birthdate: newBday&#125;)const student2 = changeStudent(student1, 'YAN Haijing', '1990-11-10');console.log(student1, student2); 使用第三方库 比如lodash中的merge函数 注意：对于数组来说，它里面的 .map, .filter或者.reduce函数不会改变原数组，而是产生并返回一个新数组。这和纯函数的思想不谋而合。 原文连接：https://juejin.im/post/58d0ff6f1b69e6006b8fd4e9]]></content>
+      <categories>
+        <category>javascript</category>
+      </categories>
+      <tags>
+        <tag>引用赋值</tag>
       </tags>
   </entry>
   <entry>
